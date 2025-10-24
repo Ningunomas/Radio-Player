@@ -5,132 +5,138 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Radio Player Agrupado y Documentado</title>
     <style>
-        /* Estilos generales */
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f4f7f6;
-            margin: 0;
-            padding: 20px;
-        }
+    /* Estilos generales */
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #f4f7f6;
+        margin: 0;
+        padding: 20px;
+    }
 
-        /* Contenedor principal para la maquetación de dos columnas */
+    /* Contenedor principal para la maquetación de dos columnas */
+    .main-layout {
+        display: flex;
+        justify-content: center;
+        gap: 30px;
+        max-width: 1000px;
+        margin: 0 auto;
+    }
+
+    /* Estilos de la columna de radio */
+    .radio-column {
+        flex: 2;
+        max-width: 500px;
+        background-color: white;
+        padding: 25px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+        border-radius: 8px;
+    }
+
+    /* Estilos de la columna del aclaratorio */
+    .info-column {
+        flex: 1;
+        min-width: 280px;
+        background-color: #ecf0f1;
+        padding: 25px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        border-radius: 8px;
+        align-self: flex-start;
+    }
+    
+    /* Media Query para pantallas pequeñas (móviles) */
+    @media (max-width: 850px) {
         .main-layout {
-            display: flex;
-            justify-content: center;
-            gap: 30px; /* Espacio entre las columnas */
-            max-width: 1000px;
-            margin: 0 auto;
+            flex-direction: column;
         }
-
-        /* Estilos de la columna de radio */
-        .radio-column {
-            flex: 2; /* Ocupa 2 partes del espacio */
-            max-width: 500px;
-            background-color: white;
-            padding: 25px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-            border-radius: 8px;
-        }
-
-        /* Estilos de la columna del aclaratorio */
         .info-column {
-            flex: 1; /* Ocupa 1 parte del espacio */
-            min-width: 280px;
-            background-color: #ecf0f1; /* Gris claro */
-            padding: 25px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-            border-radius: 8px;
-            align-self: flex-start; /* Se alinea arriba */
-        }
-        
-        /* Media Query para pantallas pequeñas (móviles) */
-        @media (max-width: 850px) {
-            .main-layout {
-                flex-direction: column; /* Apila las columnas verticalmente */
-            }
-            .info-column {
-                order: -1; /* Mueve la columna de información arriba en móviles */
-                min-width: unset;
-                margin-bottom: 20px;
-            }
-        }
-
-        /* --- Estilos del reproductor y listas (Mantenidos del código anterior) --- */
-        h1 {
-            color: #2c3e50;
-            text-align: center;
-            margin-top: 0;
-        }
-        #audio-player {
-            width: 100%;
+            order: -1;
+            min-width: unset;
             margin-bottom: 20px;
         }
-        #current-track {
-            text-align: center;
-            margin-top: 15px;
-            font-size: 1.1em;
-            color: #555;
-            font-weight: 500;
-        }
+    }
 
-        /* Estilos del Acordeón/Grupos de País */
-        .country-header {
-            background-color: #3498db;
-            color: white;
-            padding: 15px;
-            cursor: pointer;
-            font-size: 1.1em;
-            font-weight: bold;
-            border-radius: 4px;
-            margin-top: 10px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            transition: background-color 0.2s;
-        }
-        .country-header:hover {
-            background-color: #2980b9;
-        }
-        .toggle-icon {
-            font-size: 1.2em;
-            transition: transform 0.3s;
-        }
-        .country-header.active .toggle-icon {
-            transform: rotate(90deg);
-        }
-        .radio-list {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-            border: 1px solid #ddd;
-            border-top: none;
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.3s ease-in-out;
-            border-radius: 0 0 4px 4px;
-        }
-        .radio-list.open {
-            max-height: 500px;
-            border-top: 1px solid #ddd;
-        }
-        .radio-list li {
-            padding: 12px 15px;
-            border-bottom: 1px solid #eee;
-            cursor: pointer;
-            transition: background-color 0.15s;
-        }
-        .radio-list li:last-child {
-            border-bottom: none;
-        }
-        .radio-list li:hover {
-            background-color: #ecf0f1;
-        }
-        .radio-list .active-station {
-            background-color: #2ecc71;
-            color: white;
-            font-weight: bold;
-        }
-    </style>
+    /* --- Estilos del reproductor y listas --- */
+    h1 {
+        color: #2c3e50;
+        text-align: center;
+        margin-top: 0;
+    }
+    #audio-player {
+        width: 100%;
+        margin-bottom: 20px;
+    }
+    #current-track {
+        text-align: center;
+        margin-top: 15px;
+        font-size: 1.1em;
+        color: #555;
+        font-weight: 500;
+    }
+
+    /* Estilos del Acordeón/Grupos de País */
+    .country-header {
+        background-color: #3498db;
+        color: white;
+        padding: 15px;
+        cursor: pointer;
+        font-size: 1.1em;
+        font-weight: bold;
+        border-radius: 4px;
+        margin-top: 10px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        transition: background-color 0.2s;
+    }
+    .country-header:hover {
+        background-color: #2980b9;
+    }
+    .toggle-icon {
+        font-size: 1.2em;
+        transition: transform 0.3s;
+    }
+    .country-header.active .toggle-icon {
+        transform: rotate(90deg);
+    }
+
+    /* 🚨 SOLUCIÓN 1: La lista debe estar totalmente colapsada por defecto */
+    .radio-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        border: 1px solid #ddd;
+        border-top: none;
+        max-height: 0;
+        overflow: hidden; /* Esto asegura que el contenido extra no se muestre */
+        transition: max-height 0.3s ease-in-out;
+        border-radius: 0 0 4px 4px;
+    }
+
+    /* 🚀 SOLUCIÓN 2: Clase 'open' para mostrar y permitir SCROLL */
+    .radio-list.open {
+        max-height: 500px; /* Altura máxima para el desplegable */
+        border-top: 1px solid #ddd;
+        **overflow-y: auto;** /* 👈 ESTO HABILITA LA BARRA DE DESPLAZAMIENTO (SCROLL) */
+    }
+
+    .radio-list li {
+        padding: 12px 15px;
+        border-bottom: 1px solid #eee;
+        cursor: pointer;
+        transition: background-color 0.15s;
+    }
+    .radio-list li:last-child {
+        border-bottom: none;
+    }
+    .radio-list li:hover {
+        background-color: #ecf0f1;
+    }
+    .radio-list .active-station {
+        background-color: #2ecc71;
+        color: white;
+        font-weight: bold;
+    }
+</style>
 </head>
 <body>
 
