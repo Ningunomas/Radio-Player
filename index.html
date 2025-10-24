@@ -113,11 +113,15 @@
     }
 
     /* 🚀 SOLUCIÓN 2: Clase 'open' para mostrar y permitir SCROLL */
-    .radio-list.open {
-        max-height: 500px; /* Altura máxima para el desplegable */
-        border-top: 1px solid #ddd;
-        **overflow-y: auto;** /* 👈 ESTO HABILITA LA BARRA DE DESPLAZAMIENTO (SCROLL) */
-    }
+        .radio-list.open {
+    /* 👈 CAMBIA 500px POR UN VALOR MAYOR */
+    max-height: 1500px; /* ✅ Aumentado para asegurar que las listas largas excedan este límite */
+    
+    border-top: 1px solid #ddd;
+    
+    /* Esta línea es la que funciona. Si el contenido pasa de 1500px, aparecerá el scroll. */
+    overflow-y: auto;
+        }
 
     .radio-list li {
         padding: 12px 15px;
