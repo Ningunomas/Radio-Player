@@ -3,144 +3,222 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Radio Player Agrupado y Documentado</title>
+    <title>Radio Player ETS/ATS GFN - Comodidad [MEJORADO]</title>
     <style>
-    /* Estilos generales */
-    body {
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        background-color: #f4f7f6;
-        margin: 0;
-        padding: 20px;
-    }
-
-    /* Contenedor principal para la maquetación de dos columnas */
-    .main-layout {
-        display: flex;
-        justify-content: center;
-        gap: 30px;
-        max-width: 1000px;
-        margin: 0 auto;
-    }
-
-    /* Estilos de la columna de radio */
-    .radio-column {
-        flex: 2;
-        max-width: 500px;
-        background-color: white;
-        padding: 25px;
-        box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-        border-radius: 8px;
-    }
-
-    /* Estilos de la columna del aclaratorio */
-    .info-column {
-        flex: 1;
-        min-width: 280px;
-        background-color: #ecf0f1;
-        padding: 25px;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-        border-radius: 8px;
-        align-self: flex-start;
-    }
-    
-    /* Media Query para pantallas pequeñas (móviles) */
-    @media (max-width: 850px) {
-        .main-layout {
-            flex-direction: column;
+        /* Estilos generales */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7f6;
+            margin: 0;
+            padding: 20px;
         }
+
+        /* Contenedor principal para la maquetación de dos columnas */
+        .main-layout {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        /* Estilos de la columna de radio */
+        .radio-column {
+            flex: 2;
+            max-width: 500px;
+            background-color: white;
+            padding: 25px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            border-radius: 8px;
+        }
+
+        /* Estilos de la columna del aclaratorio */
         .info-column {
-            order: -1;
-            min-width: unset;
+            flex: 1;
+            min-width: 280px;
+            background-color: #ecf0f1;
+            padding: 25px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            border-radius: 8px;
+            align-self: flex-start;
+        }
+        
+        /* Media Query para pantallas pequeñas (móviles) */
+        @media (max-width: 850px) {
+            .main-layout {
+                flex-direction: column;
+            }
+            .info-column {
+                order: -1;
+                min-width: unset;
+                margin-bottom: 20px;
+            }
+        }
+
+        /* --- Estilos del reproductor y listas --- */
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-top: 0;
+        }
+        #audio-player {
+            width: 100%;
             margin-bottom: 20px;
         }
-    }
-
-    /* --- Estilos del reproductor y listas --- */
-    h1 {
-        color: #2c3e50;
-        text-align: center;
-        margin-top: 0;
-    }
-    #audio-player {
-        width: 100%;
-        margin-bottom: 20px;
-    }
-    #current-track {
-        text-align: center;
-        margin-top: 15px;
-        font-size: 1.1em;
-        color: #555;
-        font-weight: 500;
-    }
-
-    /* Estilos del Acordeón/Grupos de País */
-    .country-header {
-        background-color: #3498db;
-        color: white;
-        padding: 15px;
-        cursor: pointer;
-        font-size: 1.1em;
-        font-weight: bold;
-        border-radius: 4px;
-        margin-top: 10px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        transition: background-color 0.2s;
-    }
-    .country-header:hover {
-        background-color: #2980b9;
-    }
-    .toggle-icon {
-        font-size: 1.2em;
-        transition: transform 0.3s;
-    }
-    .country-header.active .toggle-icon {
-        transform: rotate(90deg);
-    }
-
-    /* 🚨 SOLUCIÓN 1: La lista debe estar totalmente colapsada por defecto */
-    .radio-list {
-        list-style: none;
-        padding: 0;
-        margin: 0;
-        border: 1px solid #ddd;
-        border-top: none;
-        max-height: 0;
-        overflow: hidden; /* Esto asegura que el contenido extra no se muestre */
-        transition: max-height 0.3s ease-in-out;
-        border-radius: 0 0 4px 4px;
-    }
-
-    /* 🚀 SOLUCIÓN 2: Clase 'open' para mostrar y permitir SCROLL */
-        .radio-list.open {
-    /* 👈 CAMBIA 500px POR UN VALOR MAYOR */
-    max-height: 1500px; /* ✅ Aumentado para asegurar que las listas largas excedan este límite */
-    
-    border-top: 1px solid #ddd;
-    
-    /* Esta línea es la que funciona. Si el contenido pasa de 1500px, aparecerá el scroll. */
-    overflow-y: auto;
+        
+        /* Contenedor del nombre de la radio y el icono */
+        #current-track-container { 
+            text-align: center;
+            margin-top: 15px;
+            font-size: 1.1em;
+            color: #555;
+            font-weight: 500;
+            min-height: 40px; 
+            margin-bottom: 20px;
+        }
+        #current-track {
+            display: inline;
         }
 
-    .radio-list li {
-        padding: 12px 15px;
-        border-bottom: 1px solid #eee;
-        cursor: pointer;
-        transition: background-color 0.15s;
-    }
-    .radio-list li:last-child {
-        border-bottom: none;
-    }
-    .radio-list li:hover {
-        background-color: #ecf0f1;
-    }
-    .radio-list .active-station {
-        background-color: #2ecc71;
-        color: white;
-        font-weight: bold;
-    }
-</style>
+        /* Estilo para la barra de búsqueda */
+        #search-bar {
+            width: 96%;
+            padding: 10px 2%;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 1em;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
+            outline: none;
+        }
+        #search-bar:focus {
+            border-color: #3498db;
+        }
+
+        /* Estilo para el icono de reproducción/carga */
+        #playing-indicator {
+            font-size: 1.2em;
+            margin-left: 10px;
+            vertical-align: middle;
+            color: #2ecc71; 
+            display: none; 
+        }
+
+        /* Animación para el icono de carga */
+        .loading-animation {
+            animation: spin 1s infinite linear;
+        }
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* Estilos del Acordeón/Grupos de País */
+        .country-header {
+            background-color: #3498db;
+            color: white;
+            padding: 15px;
+            cursor: pointer;
+            font-size: 1.1em;
+            font-weight: bold;
+            border-radius: 8px; 
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1); 
+            margin-top: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background-color 0.2s;
+        }
+        .country-header:hover {
+            background-color: #2980b9;
+        }
+        /* Color especial para Favoritos */
+        #favorites-header {
+            background-color: #f39c12; /* Naranja/Amarillo */
+        }
+        #favorites-header:hover {
+            background-color: #e67e22; 
+        }
+
+        .toggle-icon {
+            font-size: 1.2em;
+            transition: transform 0.3s;
+        }
+        .country-header.active .toggle-icon {
+            transform: rotate(90deg);
+        }
+
+        /* Lista base (oculta) */
+        .radio-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            border: 1px solid #ddd;
+            border-top: none;
+            max-height: 0;
+            overflow: hidden; 
+            transition: max-height 0.4s ease-in-out; 
+            border-radius: 0 0 8px 8px; 
+        }
+
+        /* Lista abierta (visible con scroll) */
+        .radio-list.open {
+            max-height: 1500px; 
+            border-top: 1px solid #ddd;
+            overflow-y: auto; 
+        }
+
+        .radio-list li {
+            padding: 12px 15px;
+            border-bottom: 1px solid #eee;
+            cursor: pointer;
+            transition: background-color 0.15s;
+            display: flex; /* Para alinear el nombre y el botón de favorito */
+            justify-content: space-between;
+            align-items: center;
+        }
+        .radio-list li:last-child {
+            border-bottom: none;
+        }
+        .radio-list li:hover {
+            background-color: #ecf0f1;
+        }
+
+        /* Indicador de emisora activa */
+        .radio-list .active-station {
+            background-color: #2ecc71; /* Verde */
+            color: white;
+            font-weight: bold;
+        }
+        /* Icono en la lista */
+        .radio-list .active-station .station-name::before {
+            content: '🔊 '; 
+            color: white;
+            font-weight: bold;
+        }
+
+        /* Botón de Favorito */
+        .favorite-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1.2em;
+            padding: 0 5px;
+            line-height: 1;
+            transition: transform 0.1s;
+        }
+        .favorite-btn:hover {
+            transform: scale(1.1);
+        }
+        /* Estilo para la emisora dentro de la lista (para que el botón no herede el color de .active-station) */
+        .station-name {
+            flex-grow: 1;
+        }
+        .active-station .favorite-btn {
+            color: white;
+        }
+        
+    </style>
 </head>
 <body>
 
@@ -149,26 +227,33 @@
         <div class="info-column">
             <h2>📜 Aclaración del Proyecto</h2>
             <p style="font-size: 0.9em; line-height: 1.5;">
-                Este reproductor ha sido creado facilitar la adición de radio en vivo en **Euro Truck Simulator 2 (ETS 2)** y **American Truck Simulator (ATS)**, especialmente para usuarios de **NVIDIA GeForce NOW (GFN)**.
+                Este reproductor ha sido creado para facilitar la adición de radio en vivo en <strong>Euro Truck Simulator 2 (ETS 2)</strong> y <strong>American Truck Simulator (ATS)</strong>, especialmente para usuarios de <strong>NVIDIA GeForce NOW (GFN)</strong>.
             </p>
             
             <p style="font-size: 0.9em; line-height: 1.5; border-left: 3px solid #f39c12; padding-left: 10px;">
-                ⚠️ **Aviso Importante:** Las radios son *streams* públicos de terceros. Si hay algún **problema de copyright o legal**, la emisora será **retirada inmediatamente**.
+                ⚠️ <strong>Aviso Importante:</strong> Las radios son <strong>streams</strong> públicos de terceros. Si hay algún <strong>problema de copyright o legal</strong>, la emisora será <strong>retirada inmediatamente</strong>.
             </p>
             
             <p style="font-size: 0.9em; line-height: 1.5;">
-                **¿Quieres más canales?** ¡Genial! Deja un comentario en Steam o abre una *Issue* en GitHub, con el **nombre** y la **URL directa** del *stream*.
-                GitHub: **<a href="https://github.com/Ningunomas/Radio-Player" target="_blank">Click aquí</a>**
-                Steam: **<a href="https://steamcommunity.com/sharedfiles/filedetails/?id=3592724079" target="_blank">Click aquí</a>**
+                <strong>¿Quieres más canales?</strong> ¡Genial! Deja un comentario en Steam o abre una <strong>Issue</strong> en GitHub, con el <strong>nombre</strong> y la <strong>URL directa</strong> del <strong>stream</strong>.
+                <p>
+                GitHub: <strong><a href="https://github.com/Ningunomas/Radio-Player" target="_blank">Click aquí</a></strong>
+                Steam: <strong><a href="https://steamcommunity.com/sharedfiles/filedetails/?id=3592724079" target="_blank">Click aquí</a></strong>
+                </p>
             </p>
         </div>
 
         <div class="radio-column">
             <h1>🚚 Radio por País (ETS/ATS GFN)</h1>
 
-            <audio id="audio-player" controls autoplay></audio>
+            <audio id="audio-player" controls autoplay muted></audio>
             
-            <p id="current-track">Selecciona una emisora de la lista.</p>
+            <p id="current-track-container">
+                <span id="current-track">Selecciona una emisora de la lista.</span>
+                <span id="playing-indicator" class="toggle-icon">🔊</span> 
+            </p>
+
+            <input type="text" id="search-bar" placeholder="🔍 Buscar emisora por nombre...">
 
             <div id="grouped-radio-container">
                 </div>
@@ -177,209 +262,62 @@
     </div>
 
     <script>
-        // --- 1. ESTRUCTURA DE DATOS AGRUPADA POR PAÍS ---
-        const groupedStations = {
+        // --- 1. ESTRUCTURA DE DATOS AGRUPADA POR PAÍS (INCLUYE TODAS LAS RADIOS) ---
+        const ALL_STATIONS_DATA = {
             "España 🇪🇸": [
-                { 
-                    name: "Los 40 Principales", 
-                    url: "https://21223.live.streamtheworld.com/LOS40_SC" 
-                },
-                { 
-                    name: "Los 40 Classic", 
-                    url: "http://21633.live.streamtheworld.com/LOS40_CLASSIC.mp3" 
-                },
-                { 
-                    name: "Los 40 Dance", 
-                    url: "http://23543.live.streamtheworld.com/LOS40_DANCE.mp3" 
-                },
-                { 
-                    name: "La Cope", 
-                    url: "https://net1-cope-rrcast.flumotion.com/cope/net2-low.mp3" 
-                },
-                { 
-                    name: "Es Radio", 
-                    url: "http://livestreaming.esradio.fm/stream64.mp3" 
-                },
-                { 
-                    name: "Kiss FM", 
-                    url: "http://kissfm.kissfmradio.cires21.com/kissfm.mp3" 
-                },
-                { 
-                    name: "Cadena 100", 
-                    url: "https://cadena100-cope-rrcast.flumotion.com/cope/cadena100-low.mp3" 
-                },
-                { 
-                    name: "Rock FM", 
-                    url: "https://rockfm-cope-rrcast.flumotion.com/cope/rockfm-low.mp3" 
-                },
-                { 
-                    name: "La Ser", 
-                    url: "http://25603.live.streamtheworld.com/CADENASER.mp3" 
-                },
-                { 
-                    name: "Hit FM", 
-                    url: "http://hitfm.kissfmradio.cires21.com/hitfm.mp3" 
-                },
-                { 
-                    name: "Onda Cero", 
-                    url: "http://icecast-streaming.nice264.com/ondacero" 
-                },
-                { 
-                    name: "Europa FM", 
-                    url: "http://stm1.emiteonline.com:8001/europafmhuelva" 
-                },
-                { 
-                    name: "Cadena Dial", 
-                    url: "https://20073.live.streamtheworld.com/CADENADIAL_SC" 
-                },
-                { 
-                    name: "Radio Ole", 
-                    url: "http://21633.live.streamtheworld.com/RADIOLE.mp3" 
-                },
-                { 
-                    name: "Gozadera FM", 
-                    url: "https://azura.abcorp.es/radio/8070/live" 
-                },
-                { 
-                    name: "Bikini FM", 
-                    url: "https://stream.mediasector.es/radio/8030/bikinifm.mp3?1585784696" 
-                },
-                {
-                    name: "Radio Marca",
-                    url: "https://playerservices.streamtheworld.com/api/livestream-redirect/RADIOMARCA_NACIONAL.mp3?dist=onlineradiobox"
-                },
-                { 
-                    name: "Love 90", 
-                    url: "https://c6.auracast.net/radio/8090/radio.mp3" 
-                },
-                { 
-                    name: "Radio Maria", 
-                    url: "https://dreamsiteradiocp2.com/proxy/rmspain2?mp=/stream" 
-                },
-                { 
-                    name: "RAC 1", 
-                    url: "https://playerservices.streamtheworld.com/api/livestream-redirect/RAC_1.mp3?dist=onlineradiobox" 
-                },
-                { 
-                    name: "Radio Taxi", 
-                    url: "https://radiott-web.streaming-pro.com:6103/radiott.mp3" 
-                },
-                { 
-                    name: "MetalFlames Radio", 
-                    url: "https://stream.zeno.fm/rb354pruvs8uv" 
-                },
-                { 
-                    name: "1000 HITS SPAIN", 
-                    url: "https://c2.auracast.net/radio/8022/radio.mp3" 
-                },
-                { 
-                    name: "Radio Planeta", 
-                    url: "https://radioplaneta.emitironline.com/radio" 
-                },
-                { 
-                    name: "Ibiza Live Radio", 
-                    url: "https://streams.radio.co/sdc9cfaf77/listen" 
-                },
-                { 
-                    name: "Zona Rap", 
-                    url: "https://radio.zonarap.es/listen/zona_rap_radio/radio.mp3" 
-                },
-                { 
-                    name: "Loca Latino", 
-                    url: "https://srv7021.dns-lcinternet.com/8028/stream?hash=1733779053767.mp3" 
-                },
-                { 
-                    name: "Radio Nature", 
-                    url: "https://stream.zeno.fm/sfpqezsh6f0uv" 
-                },
-                { 
-                    name: "Carnaval FM", 
-                    url: "https://streaming2.elitecomunicacion.es:8108/stream" 
-                },
-                { 
-                    name: "Mortal FM", 
-                    url: "http://stream2.beatproducciones.com:8044/;" 
-                },
-                { 
-                    name: "IlloJuan Sounds", 
-                    url: "https://stream.zeno.fm/dfxrsplg0aiuv" 
-                },
-                { 
-                    name: "Tormes FM", 
-                    url: "http://str1.mediatelekom.net:8738/;" 
-                }
+                { name: "Los 40 Principales", url: "https://21223.live.streamtheworld.com/LOS40_SC" },
+                { name: "Los 40 Classic", url: "http://21633.live.streamtheworld.com/LOS40_CLASSIC.mp3" },
+                { name: "Los 40 Dance", url: "http://23543.live.streamtheworld.com/LOS40_DANCE.mp3" },
+                { name: "La Cope", url: "https://net1-cope-rrcast.flumotion.com/cope/net2-low.mp3" },
+                { name: "Es Radio", url: "http://livestreaming.esradio.fm/stream64.mp3" },
+                { name: "Kiss FM", url: "http://kissfm.kissfmradio.cires21.com/kissfm.mp3" },
+                { name: "Cadena 100", url: "https://cadena100-cope-rrcast.flumotion.com/cope/cadena100-low.mp3" },
+                { name: "Rock FM", url: "https://rockfm-cope-rrcast.flumotion.com/cope/rockfm-low.mp3" },
+                { name: "La Ser", url: "http://25603.live.streamtheworld.com/CADENASER.mp3" },
+                { name: "Hit FM", url: "http://hitfm.kissfmradio.cires21.com/hitfm.mp3" },
+                { name: "Onda Cero", url: "http://icecast-streaming.nice264.com/ondacero" },
+                { name: "Europa FM", url: "http://stm1.emiteonline.com:8001/europafmhuelva" },
+                { name: "Cadena Dial", url: "https://20073.live.streamtheworld.com/CADENADIAL_SC" },
+                { name: "Radio Ole", url: "http://21633.live.streamtheworld.com/RADIOLE.mp3" },
+                { name: "Gozadera FM", url: "https://azura.abcorp.es/radio/8070/live" },
+                { name: "Bikini FM", url: "https://stream.mediasector.es/radio/8030/bikinifm.mp3?1585784696" },
+                { name: "Radio Marca", url: "https://playerservices.streamtheworld.com/api/livestream-redirect/RADIOMARCA_NACIONAL.mp3?dist=onlineradiobox" },
+                { name: "Love 90", url: "https://c6.auracast.net/radio/8090/radio.mp3" },
+                { name: "Radio Maria", url: "https://dreamsiteradiocp2.com/proxy/rmspain2?mp=/stream" },
+                { name: "RAC 1", url: "https://playerservices.streamtheworld.com/api/livestream-redirect/RAC_1.mp3?dist=onlineradiobox" },
+                { name: "Radio Taxi", url: "https://radiott-web.streaming-pro.com:6103/radiott.mp3" },
+                { name: "MetalFlames Radio", url: "https://stream.zeno.fm/rb354pruvs8uv" },
+                { name: "1000 HITS SPAIN", url: "https://c2.auracast.net/radio/8022/radio.mp3" },
+                { name: "Radio Planeta", url: "https://radioplaneta.emitironline.com/radio" },
+                { name: "Ibiza Live Radio", url: "https://streams.radio.co/sdc9cfaf77/listen" },
+                { name: "Zona Rap", url: "https://radio.zonarap.es/listen/zona_rap_radio/radio.mp3" },
+                { name: "Loca Latino", url: "https://srv7021.dns-lcinternet.com/8028/stream?hash=1733779053767.mp3" },
+                { name: "Radio Nature", url: "https://stream.zeno.fm/sfpqezsh6f0uv" },
+                { name: "Carnaval FM", url: "https://streaming2.elitecomunicacion.es:8108/stream" },
+                { name: "Mortal FM", url: "http://stream2.beatproducciones.com:8044/;" },
+                { name: "IlloJuan Sounds", url: "https://stream.zeno.fm/dfxrsplg0aiuv" },
+                { name: "Tormes FM", url: "http://str1.mediatelekom.net:8738/;" }
             ],
             "Latinoamérica 🌎": [
-                { 
-                    name: "Radio Que Onda", 
-                    url: "https://cast3.my-control-panel.com/proxy/gabriel4/stream" 
-                },
-                { 
-                    name: "Universal Stereo", 
-                    url: "https://playerservices.streamtheworld.com/api/livestream-redirect/XHFO_FM.mp3?dist=onlineradiobox" 
-                },
-                { 
-                    name: "Radio Disney", 
-                    url: "https://playerservices.streamtheworld.com/api/livestream-redirect/DISNEY_ARG_BA.mp3?dist=onlineradiobox" 
-                },
-                { 
-                    name: "Radio Salsa", 
-                    url: "http://radio.domiplay.net:2002/;" 
-                },
-                { 
-                    name: "Truckers FM", 
-                    url: "https://radio.truckers.fm/" 
-                }
+                { name: "Radio Que Onda", url: "https://cast3.my-control-panel.com/proxy/gabriel4/stream" },
+                { name: "Universal Stereo", url: "https://playerservices.streamtheworld.com/api/livestream-redirect/XHFO_FM.mp3?dist=onlineradiobox" },
+                { name: "Radio Disney", url: "https://playerservices.streamtheworld.com/api/livestream-redirect/DISNEY_ARG_BA.mp3?dist=onlineradiobox" },
+                { name: "Radio Salsa", url: "http://radio.domiplay.net:2002/;" },
+                { name: "Truckers FM", url: "https://radio.truckers.fm/" }
             ],
             "Otros 🌍": [
-                { 
-                    name: "Hits Radio Liberia", 
-                    url: "https://s4.radio.co/sada156669/listen" 
-                },
-                { 
-                    name: "Radio Romanul", 
-                    url: "http://streaming.radioromanul.es:55556/web" 
-                },
-                { 
-                    name: "J-Pop Powerplay", 
-                    url: "https://kathy.torontocast.com:3560/;" 
-                },
-                { 
-                    name: "Hits Radio Liberia", 
-                    url: "https://s4.radio.co/sada156669/listen" 
-                },
-                { 
-                    name: "Splash Coffee", 
-                    url: "https://ais-sa2.cdnstream1.com/2345_128.mp3" 
-                },
-                { 
-                    name: "Generations Rap Français", 
-                    url: "https://generationfm-rap.ice.infomaniak.ch/generationfm-rap-high.mp3" 
-                },
-                { 
-                    name: "Future Groove FM", 
-                    url: "https://streamer.radio.co/s4b3dafa6d/listen" 
-                },
-                { 
-                    name: "One World Radio", 
-                    url: "https://playerservices.streamtheworld.com/api/livestream-redirect/OWR_INTERNATIONAL.mp3?dist=onlineradiobox" 
-                },
-                { 
-                    name: "American Road Radio", 
-                    url: "https://c5.radioboss.fm:18224/stream" 
-                },
-                { 
-                    name: "Planet Hip Hop", 
-                    url: "https://str3.openstream.co/1841" 
-                },
-                { 
-                    name: "Radio Voz de Santo Tirso", 
-                    url: "https://radios.justweb.pt/8024/stream" 
-                },
-                 { 
-                    name: "Truckers FM", 
-                    url: "https://radio.truckers.fm/" 
-                }
+                { name: "Hits Radio Liberia", url: "https://s4.radio.co/sada156669/listen" },
+                { name: "Radio Romanul", url: "http://streaming.radioromanul.es:55556/web" },
+                { name: "J-Pop Powerplay", url: "https://kathy.torontocast.com:3560/;" },
+                { name: "Hits Radio Liberia", url: "https://s4.radio.co/sada156669/listen" },
+                { name: "Splash Coffee", url: "https://ais-sa2.cdnstream1.com/2345_128.mp3" },
+                { name: "Generations Rap Français", url: "https://generationfm-rap.ice.infomaniak.ch/generationfm-rap-high.mp3" },
+                { name: "Future Groove FM", url: "https://streamer.radio.co/s4b3dafa6d/listen" },
+                { name: "One World Radio", url: "https://playerservices.streamtheworld.com/api/livestream-redirect/OWR_INTERNATIONAL.mp3?dist=onlineradiobox" },
+                { name: "American Road Radio", url: "https://c5.radioboss.fm:18224/stream" },
+                { name: "Planet Hip Hop", url: "https://str3.openstream.co/1841" },
+                { name: "Radio Voz de Santo Tirso", url: "https://radios.justweb.pt/8024/stream" },
+                { name: "Truckers FM", url: "https://radio.truckers.fm/" }
             ]
         };
 
@@ -387,67 +325,250 @@
         const player = document.getElementById('audio-player');
         const container = document.getElementById('grouped-radio-container');
         const currentTrackDisplay = document.getElementById('current-track');
+        const playingIndicator = document.getElementById('playing-indicator'); 
+        const searchBar = document.getElementById('search-bar'); // Nueva barra de búsqueda
         
         let currentActiveItem = null;
 
-        // --- 3. FUNCIÓN PRINCIPAL DE CARGA DE EMISORA ---
-        function loadStation(station, listItem) {
+        // --- 3. FUNCIONES DE GESTIÓN DE FAVORITOS (LocalStorage) ---
+
+        /** Obtiene el array de URLs favoritas desde LocalStorage */
+        function getFavorites() {
+            try {
+                const favorites = localStorage.getItem('radioFavorites');
+                return favorites ? JSON.parse(favorites) : [];
+            } catch (e) {
+                console.error("Error al obtener favoritos:", e);
+                return [];
+            }
+        }
+
+        /** Guarda el array de URLs favoritas en LocalStorage */
+        function saveFavorites(favoritesArray) {
+            try {
+                localStorage.setItem('radioFavorites', JSON.stringify(favoritesArray));
+            } catch (e) {
+                console.error("Error al guardar favoritos:", e);
+            }
+        }
+
+        /** Alterna el estado de una emisora (Añadir/Quitar) */
+        function toggleFavorite(station, btn) {
+            const favorites = getFavorites();
+            const index = favorites.findIndex(fav => fav.url === station.url);
+
+            if (index > -1) {
+                // Quitar de favoritos
+                favorites.splice(index, 1);
+                btn.textContent = '☆';
+            } else {
+                // Añadir a favoritos
+                favorites.push(station);
+                btn.textContent = '★';
+            }
+            saveFavorites(favorites);
+            renderRadioLists(); // Volver a dibujar para actualizar la sección Favoritos
+        }
+
+        // --- 4. FUNCIÓN PRINCIPAL DE REPRODUCCIÓN ---
+        function loadStation(station, listItem, radioList, header) {
+            
+            // 1. Mostrar estado de Carga con icono giratorio
+            currentTrackDisplay.textContent = `Cargando: ${station.name}...`;
+            playingIndicator.textContent = '🔃'; 
+            playingIndicator.classList.add('loading-animation'); 
+            playingIndicator.style.display = 'inline';
+            
+            // 2. Establecer fuente, forzar la carga y QUITAR el silencio
             player.src = station.url;
             player.load();
-            player.play().catch(error => {
-                console.error("Fallo al reproducir automáticamente:", error);
+            player.muted = false; 
+            
+            // 3. Intentar Reproducir y Gestionar ÉXITO/FALLO
+            player.play().then(() => {
+                // ÉXITO
+                currentTrackDisplay.textContent = `Reproduciendo: ${station.name}`;
+                playingIndicator.textContent = '🔊'; 
+                playingIndicator.classList.remove('loading-animation');
+            }).catch(error => {
+                // FALLO (CORS/Autoplay/Otros)
+                console.error("Fallo al reproducir:", error);
+                
+                // Mensaje de error útil
+                currentTrackDisplay.innerHTML = `🛑 <strong>Error de Conexión/CORS</strong> en <strong>${station.name}</strong>. 
+                                                 <br> Intenta pulsar <strong>PLAY</strong> en el reproductor de arriba.`;
+                playingIndicator.style.display = 'none'; 
             });
             
-            currentTrackDisplay.textContent = `Reproduciendo: ${station.name}`;
-
+            // 4. Actualizar el estilo de la lista (marcar la activa)
             if (currentActiveItem) {
                 currentActiveItem.classList.remove('active-station');
             }
-            listItem.classList.add('active-station');
-            currentActiveItem = listItem;
+            // Debemos buscar el elemento en la lista que coincida con la URL actual para marcarlo
+            document.querySelectorAll('li').forEach(li => {
+                if (li.dataset.url === station.url) {
+                     li.classList.add('active-station');
+                     currentActiveItem = li;
+                }
+            });
+            
+            // 5. CIERRE AUTOMÁTICO
+            radioList.classList.remove('open');
+            header.classList.remove('active');
         }
 
-        // --- 4. FUNCIÓN PARA GENERAR LA ESTRUCTURA DEL ACORDEÓN ---
-        Object.keys(groupedStations).forEach(country => {
-            const stations = groupedStations[country];
-            
-            const header = document.createElement('div');
-            header.className = 'country-header';
-            header.innerHTML = `${country} <span class="toggle-icon">▶</span>`;
-            
-            const radioList = document.createElement('ul');
-            radioList.className = 'radio-list';
+        // --- 5. FUNCIÓN DE RENDERIZADO (DIBUJA LAS LISTAS) ---
+        function renderRadioLists() {
+            container.innerHTML = ''; // Limpia el contenedor
 
-            header.addEventListener('click', () => {
-                radioList.classList.toggle('open');
-                header.classList.toggle('active');
+            const favorites = getFavorites();
+            
+            // Prepara las emisoras a dibujar (incluyendo Favoritos)
+            const stationsToRender = {
+                "⭐ Favoritos": favorites,
+                ...ALL_STATIONS_DATA
+            };
+
+            Object.keys(stationsToRender).forEach(country => {
+                const stations = stationsToRender[country];
                 
-                document.querySelectorAll('.radio-list.open').forEach(list => {
-                    if (list !== radioList) {
-                        list.classList.remove('open');
-                        list.previousElementSibling.classList.remove('active');
+                const header = document.createElement('div');
+                header.className = 'country-header';
+                if (country === "⭐ Favoritos") {
+                    header.id = 'favorites-header'; 
+                }
+                header.innerHTML = `${country} <span class="toggle-icon">▶</span>`;
+                
+                const radioList = document.createElement('ul');
+                radioList.className = 'radio-list';
+
+                // Evento para abrir/cerrar el desplegable
+                header.addEventListener('click', () => {
+                    radioList.classList.toggle('open');
+                    header.classList.toggle('active');
+                    
+                    // Cierra otros desplegables abiertos
+                    document.querySelectorAll('.radio-list.open').forEach(list => {
+                        if (list !== radioList) {
+                            list.classList.remove('open');
+                            list.previousElementSibling.classList.remove('active');
+                        }
+                    });
+                });
+
+                // Recorrer las emisoras de ese país
+                stations.forEach(station => {
+                    const listItem = document.createElement('li');
+                    listItem.dataset.url = station.url; // Usamos el atributo data-url para identificar
+                    
+                    const stationNameSpan = document.createElement('span');
+                    stationNameSpan.className = 'station-name';
+                    stationNameSpan.textContent = station.name;
+
+                    const favoriteBtn = document.createElement('button');
+                    favoriteBtn.className = 'favorite-btn';
+                    
+                    // Lógica para mostrar si está en favoritos
+                    const isFavorite = favorites.some(fav => fav.url === station.url);
+                    favoriteBtn.textContent = isFavorite ? '★' : '☆'; // Relleno si es favorito
+
+                    favoriteBtn.addEventListener('click', (e) => {
+                        e.stopPropagation(); // Evita que se reproduzca al marcar
+                        toggleFavorite(station, favoriteBtn);
+                    });
+                    
+                    // Asignar la función de reproducción al hacer click
+                    stationNameSpan.addEventListener('click', () => {
+                        loadStation(station, listItem, radioList, header); 
+                    });
+                    
+                    listItem.appendChild(stationNameSpan);
+                    listItem.appendChild(favoriteBtn);
+                    radioList.appendChild(listItem);
+
+                    // Si esta es la emisora activa, marcamos el estilo
+                    if (currentActiveItem && currentActiveItem.dataset.url === station.url) {
+                        listItem.classList.add('active-station');
+                        currentActiveItem = listItem; // Mantenemos la referencia
                     }
                 });
+
+                container.appendChild(header);
+                container.appendChild(radioList);
             });
-
-            stations.forEach(station => {
-                const listItem = document.createElement('li');
-                listItem.textContent = station.name;
-                
-                listItem.addEventListener('click', () => {
-                    loadStation(station, listItem);
-                });
-                
-                radioList.appendChild(listItem);
-            });
-
-            container.appendChild(header);
-            container.appendChild(radioList);
-        });
-
-        if (player) {
-             player.pause();
         }
+        
+        // --- 6. FUNCIÓN DE BÚSQUEDA Y FILTRADO (MEJORA UX) ---
+        function filterStations() {
+            const query = searchBar.value.toLowerCase();
+            const allListItems = document.querySelectorAll('.radio-list li');
+
+            allListItems.forEach(item => {
+                const stationName = item.querySelector('.station-name').textContent.toLowerCase();
+                
+                if (stationName.includes(query)) {
+                    item.style.display = 'flex'; // Muestra el elemento (usamos flex por el diseño)
+                    
+                    // Si se encuentra un resultado, abre la cabecera del país automáticamente
+                    const parentList = item.closest('.radio-list');
+                    if (parentList) {
+                        parentList.classList.add('open');
+                        parentList.previousElementSibling.classList.add('active');
+                    }
+                } else {
+                    item.style.display = 'none'; // Oculta el elemento
+                }
+            });
+            
+            // Si la búsqueda está vacía, resetea todas las listas
+            if (query === '') {
+                 document.querySelectorAll('.radio-list, .country-header').forEach(el => {
+                    el.classList.remove('open', 'active');
+                });
+            }
+        }
+        
+        // --- 7. INICIALIZACIÓN DEL REPRODUCTOR (REFRACTORING) ---
+        function initPlayer() {
+            // A. Dibujar todas las listas (incluyendo favoritos)
+            renderRadioLists();
+            
+            // B. Eventos de la barra de búsqueda
+            searchBar.addEventListener('keyup', filterStations);
+
+            // C. Eventos globales del reproductor (ya implementados)
+            player.addEventListener('pause', () => {
+                playingIndicator.style.display = 'none';
+            });
+            
+            player.addEventListener('play', () => {
+                if (player.src && player.currentTime > 0) {
+                    playingIndicator.textContent = '🔊';
+                    playingIndicator.classList.remove('loading-animation');
+                    playingIndicator.style.display = 'inline';
+                }
+            });
+
+            player.addEventListener('waiting', () => {
+                if (player.src && !player.paused) {
+                    playingIndicator.textContent = '🔃';
+                    playingIndicator.classList.add('loading-animation');
+                }
+            });
+
+            player.addEventListener('playing', () => {
+                if (player.src && !player.paused) {
+                    playingIndicator.textContent = '🔊';
+                    playingIndicator.classList.remove('loading-animation');
+                }
+            });
+
+            // Ocultar el indicador al cargar la página inicialmente
+            playingIndicator.style.display = 'none'; 
+        }
+
+        // Ejecutar la función de inicialización al cargar la página
+        window.addEventListener('load', initPlayer);
 
     </script>
     
