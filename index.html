@@ -3,157 +3,324 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Radio Player by GitHub Pages</title>
+    <title>Radio Player Agrupado y Documentado</title>
     <style>
-        /* Estilos básicos para la interfaz */
+        /* Estilos generales */
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: #f4f7f6;
             margin: 0;
             padding: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
         }
-        .container {
+
+        /* Contenedor principal para la maquetación de dos columnas */
+        .main-layout {
+            display: flex;
+            justify-content: center;
+            gap: 30px; /* Espacio entre las columnas */
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        /* Estilos de la columna de radio */
+        .radio-column {
+            flex: 2; /* Ocupa 2 partes del espacio */
             max-width: 500px;
-            width: 100%;
             background-color: white;
-            padding: 20px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            padding: 25px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
             border-radius: 8px;
         }
-        h1 {
-            color: #333;
-            text-align: center;
+
+        /* Estilos de la columna del aclaratorio */
+        .info-column {
+            flex: 1; /* Ocupa 1 parte del espacio */
+            min-width: 280px;
+            background-color: #ecf0f1; /* Gris claro */
+            padding: 25px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            border-radius: 8px;
+            align-self: flex-start; /* Se alinea arriba */
         }
-        /* Estilos del reproductor de audio */
+        
+        /* Media Query para pantallas pequeñas (móviles) */
+        @media (max-width: 850px) {
+            .main-layout {
+                flex-direction: column; /* Apila las columnas verticalmente */
+            }
+            .info-column {
+                order: -1; /* Mueve la columna de información arriba en móviles */
+                min-width: unset;
+                margin-bottom: 20px;
+            }
+        }
+
+        /* --- Estilos del reproductor y listas (Mantenidos del código anterior) --- */
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-top: 0;
+        }
         #audio-player {
             width: 100%;
             margin-bottom: 20px;
-        }
-        /* Estilos de la lista de radios */
-        #radio-list {
-            list-style: none;
-            padding: 0;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-        }
-        #radio-list li {
-            padding: 12px;
-            border-bottom: 1px solid #eee;
-            cursor: pointer;
-            transition: background-color 0.15s, color 0.15s;
-        }
-        #radio-list li:last-child {
-            border-bottom: none;
-        }
-        #radio-list li:hover {
-            background-color: #e0f7fa;
-        }
-        #radio-list .active {
-            background-color: #00bcd4; /* Color turquesa para destacar */
-            color: white;
-            font-weight: bold;
         }
         #current-track {
             text-align: center;
             margin-top: 15px;
             font-size: 1.1em;
             color: #555;
+            font-weight: 500;
+        }
+
+        /* Estilos del Acordeón/Grupos de País */
+        .country-header {
+            background-color: #3498db;
+            color: white;
+            padding: 15px;
+            cursor: pointer;
+            font-size: 1.1em;
+            font-weight: bold;
+            border-radius: 4px;
+            margin-top: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background-color 0.2s;
+        }
+        .country-header:hover {
+            background-color: #2980b9;
+        }
+        .toggle-icon {
+            font-size: 1.2em;
+            transition: transform 0.3s;
+        }
+        .country-header.active .toggle-icon {
+            transform: rotate(90deg);
+        }
+        .radio-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            border: 1px solid #ddd;
+            border-top: none;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-in-out;
+            border-radius: 0 0 4px 4px;
+        }
+        .radio-list.open {
+            max-height: 500px;
+            border-top: 1px solid #ddd;
+        }
+        .radio-list li {
+            padding: 12px 15px;
+            border-bottom: 1px solid #eee;
+            cursor: pointer;
+            transition: background-color 0.15s;
+        }
+        .radio-list li:last-child {
+            border-bottom: none;
+        }
+        .radio-list li:hover {
+            background-color: #ecf0f1;
+        }
+        .radio-list .active-station {
+            background-color: #2ecc71;
+            color: white;
+            font-weight: bold;
         }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <h1>📻 Reproductor de Radio Web</h1>
-
-        <audio id="audio-player" controls autoplay></audio>
-
-        <ul id="radio-list">
-            </ul>
+    <div class="main-layout">
         
-        <p id="current-track">Selecciona una emisora de la lista.</p>
+        <div class="info-column">
+            <h2>📜 Aclaración del Proyecto</h2>
+            <p style="font-size: 0.9em; line-height: 1.5;">
+                Este reproductor ha sido creado facilitar la adición de radio en vivo en **Euro Truck Simulator 2 (ETS 2)** y **American Truck Simulator (ATS)**, especialmente para usuarios de **NVIDIA GeForce NOW (GFN)**.
+            </p>
+            
+            <p style="font-size: 0.9em; line-height: 1.5; border-left: 3px solid #f39c12; padding-left: 10px;">
+                ⚠️ **Aviso Importante:** Las radios son *streams* públicos de terceros. Si hay algún **problema de copyright o legal**, la emisora será **retirada inmediatamente**.
+            </p>
+            
+            <p style="font-size: 0.9em; line-height: 1.5;">
+                **¿Quieres más canales?** ¡Genial! Deja un comentario o abre una *Issue* en el repositorio de GitHub con el **nombre** y la **URL directa** del *stream*. Url del proyecto: https://github.com/Ningunomas/Radio-Player
+            </p>
+        </div>
+
+        <div class="radio-column">
+            <h1>🚚 Radio por País (ETS/ATS GFN)</h1>
+
+            <audio id="audio-player" controls autoplay></audio>
+            
+            <p id="current-track">Selecciona una emisora de la lista.</p>
+
+            <div id="grouped-radio-container">
+                </div>
+        </div>
+
     </div>
 
     <script>
-        // --- 1. DATOS DE LAS RADIOS ---
-        // ⚠️ IMPORTANTE: Aquí se insertan tus URLs. Reemplaza la URL de ejemplo por las tuyas.
-        const radioStations = [
-            // 🛑 La URL que proporcionaste (posiblemente bloqueada por CORS en GitHub Pages)
-            { 
-                name: "LOS40", 
-                url: "https://21223.live.streamtheworld.com/LOS40_SC" 
-            },
-            // ✅ URL DE PRUEBA (Generalmente funcional para añadir más)
-            { 
-                name: "La Ser", 
-                url: "http://25603.live.streamtheworld.com/CADENASER.mp3" // Un stream público que suele funcionar
-            },
-            // ➕ AÑADE MÁS RADIOS AQUÍ siguiendo el mismo formato: { name: "Título", url: "https://enlace_directo_stream" }
-        ];
+        // --- 1. ESTRUCTURA DE DATOS AGRUPADA POR PAÍS ---
+        const groupedStations = {
+            "España 🇪🇸": [
+                { 
+                    name: "Los 40 Principales", 
+                    url: "https://21223.live.streamtheworld.com/LOS40_SC" 
+                },
+                { 
+                    name: "Los 40 Classic", 
+                    url: "http://21633.live.streamtheworld.com/LOS40_CLASSIC.mp3" 
+                },
+                { 
+                    name: "Los 40 Dance", 
+                    url: "http://23543.live.streamtheworld.com/LOS40_DANCE.mp3" 
+                },
+                { 
+                    name: "La Cope", 
+                    url: "https://net1-cope-rrcast.flumotion.com/cope/net2-low.mp3" 
+                },
+                { 
+                    name: "Es Radio", 
+                    url: "http://livestreaming.esradio.fm/stream64.mp3" 
+                },
+                { 
+                    name: "Kiss FM", 
+                    url: "http://kissfm.kissfmradio.cires21.com/kissfm.mp3" 
+                },
+                { 
+                    name: "Cadena 100", 
+                    url: "https://cadena100-cope-rrcast.flumotion.com/cope/cadena100-low.mp3" 
+                },
+                { 
+                    name: "Rock FM", 
+                    url: "https://rockfm-cope-rrcast.flumotion.com/cope/rockfm-low.mp3" 
+                },
+                { 
+                    name: "La Ser", 
+                    url: "http://25603.live.streamtheworld.com/CADENASER.mp3" 
+                },
+                { 
+                    name: "Hit FM", 
+                    url: "http://hitfm.kissfmradio.cires21.com/hitfm.mp3" 
+                },
+                { 
+                    name: "Onda Cero", 
+                    url: "http://icecast-streaming.nice264.com/ondacero" 
+                },
+                { 
+                    name: "Europa FM", 
+                    url: "http://stm1.emiteonline.com:8001/europafmhuelva" 
+                },
+                { 
+                    name: "Cadena Dial", 
+                    url: "https://20073.live.streamtheworld.com/CADENADIAL_SC" 
+                },
+                { 
+                    name: "Radio Ole", 
+                    url: "http://21633.live.streamtheworld.com/RADIOLE.mp3" 
+                },
+                { 
+                    name: "Gozadera FM", 
+                    url: "https://azura.abcorp.es/radio/8070/live" 
+                },
+                { 
+                    name: "Bikini FM", 
+                    url: "https://stream.mediasector.es/radio/8030/bikinifm.mp3?1585784696" 
+                },
+                { 
+                    name: "Truckers FM", 
+                    url: "https://radio.truckers.fm/" 
+                }
+            ],
+            "Latinoamérica 🌎": [
+                { 
+                    name: "Radio Que Onda", 
+                    url: "https://cast3.my-control-panel.com/proxy/gabriel4/stream" 
+                },
+                { 
+                    name: "Truckers FM", 
+                    url: "https://radio.truckers.fm/" 
+                }
+            ],
+            "Europa (Otros) 🌍": [
+                 { 
+                    name: "Truckers FM", 
+                    url: "https://radio.truckers.fm/" 
+                }
+            ]
+        };
 
-        // --- 2. ELEMENTOS DEL DOM ---
+        // --- 2. ELEMENTOS DEL DOM y Variables ---
         const player = document.getElementById('audio-player');
-        const listContainer = document.getElementById('radio-list');
+        const container = document.getElementById('grouped-radio-container');
         const currentTrackDisplay = document.getElementById('current-track');
         
         let currentActiveItem = null;
 
-        // --- 3. FUNCIÓN PRINCIPAL DE CARGA ---
+        // --- 3. FUNCIÓN PRINCIPAL DE CARGA DE EMISORA ---
         function loadStation(station, listItem) {
-            // 1. Establecer la fuente de audio, cargarla e intentar reproducir
             player.src = station.url;
             player.load();
+            player.play().catch(error => {
+                console.error("Fallo al reproducir automáticamente:", error);
+            });
             
-            const playPromise = player.play();
-            
-            // 2. Gestionar la reproducción y posibles errores (como el bloqueo de autoplay)
-            if (playPromise !== undefined) {
-                playPromise.then(_ => {
-                    // La reproducción automática fue exitosa
-                    console.log(`Reproduciendo: ${station.name}`);
-                }).catch(error => {
-                    // El navegador bloqueó la reproducción automática.
-                    console.error("Fallo al intentar reproducir automáticamente:", error);
-                    alert(`El navegador bloqueó la reproducción automática. Por favor, pulsa el botón PLAY en el reproductor. (Error: ${station.name})`);
-                });
-            }
-
-            // 3. Actualizar el título y el estilo de la lista
             currentTrackDisplay.textContent = `Reproduciendo: ${station.name}`;
 
             if (currentActiveItem) {
-                currentActiveItem.classList.remove('active');
+                currentActiveItem.classList.remove('active-station');
             }
-            listItem.classList.add('active');
+            listItem.classList.add('active-station');
             currentActiveItem = listItem;
         }
 
-        // --- 4. GENERAR LA LISTA EN HTML ---
-        radioStations.forEach(station => {
-            const listItem = document.createElement('li');
-            listItem.textContent = station.name;
+        // --- 4. FUNCIÓN PARA GENERAR LA ESTRUCTURA DEL ACORDEÓN ---
+        Object.keys(groupedStations).forEach(country => {
+            const stations = groupedStations[country];
             
-            // Añadir el evento de click
-            listItem.addEventListener('click', () => {
-                loadStation(station, listItem);
+            const header = document.createElement('div');
+            header.className = 'country-header';
+            header.innerHTML = `${country} <span class="toggle-icon">▶</span>`;
+            
+            const radioList = document.createElement('ul');
+            radioList.className = 'radio-list';
+
+            header.addEventListener('click', () => {
+                radioList.classList.toggle('open');
+                header.classList.toggle('active');
+                
+                document.querySelectorAll('.radio-list.open').forEach(list => {
+                    if (list !== radioList) {
+                        list.classList.remove('open');
+                        list.previousElementSibling.classList.remove('active');
+                    }
+                });
             });
-            
-            listContainer.appendChild(listItem);
+
+            stations.forEach(station => {
+                const listItem = document.createElement('li');
+                listItem.textContent = station.name;
+                
+                listItem.addEventListener('click', () => {
+                    loadStation(station, listItem);
+                });
+                
+                radioList.appendChild(listItem);
+            });
+
+            container.appendChild(header);
+            container.appendChild(radioList);
         });
 
-        // Opcional: Cargar automáticamente la primera radio al inicio (y pausar si el navegador lo exige)
-        if (radioStations.length > 0) {
-            const firstStation = radioStations[0];
-            const firstListItem = listContainer.querySelector('li');
-            
-            // Carga la URL, pero el usuario debe hacer click en la lista o en el play.
-            loadStation(firstStation, firstListItem);
-            player.pause(); // Pausamos inicialmente para evitar el bloqueo del navegador
-            currentTrackDisplay.textContent = `Lista cargada. Selecciona una radio para empezar.`;
+        if (player) {
+             player.pause();
         }
+
     </script>
     
 </body>
