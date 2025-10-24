@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Radio Player by GitHub Pages</title>
+    <style>
+        /* Estilos básicos para la interfaz */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7f6;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .container {
+            max-width: 500px;
+            width: 100%;
+            background-color: white;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            border-radius: 8px;
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        /* Estilos del reproductor de audio */
+        #audio-player {
+            width: 100%;
+            margin-bottom: 20px;
+        }
+        /* Estilos de la lista de radios */
+        #radio-list {
+            list-style: none;
+            padding: 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        #radio-list li {
+            padding: 12px;
+            border-bottom: 1px solid #eee;
+            cursor: pointer;
+            transition: background-color 0.15s, color 0.15s;
+        }
+        #radio-list li:last-child {
+            border-bottom: none;
+        }
+        #radio-list li:hover {
+            background-color: #e0f7fa;
+        }
+        #radio-list .active {
+            background-color: #00bcd4; /* Color turquesa para destacar */
+            color: white;
+            font-weight: bold;
+        }
+        #current-track {
+            text-align: center;
+            margin-top: 15px;
+            font-size: 1.1em;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>📻 Reproductor de Radio Web</h1>
+
+        <audio id="audio-player" controls autoplay></audio>
+
+        <ul id="radio-list">
+            </ul>
+        
+        <p id="current-track">Selecciona una emisora de la lista.</p>
+    </div>
+
+    <script>
+        // --- 1. DATOS DE LAS RADIOS ---
+        // ⚠️ IMPORTANTE: Aquí se insertan tus URLs. Reemplaza la URL de ejemplo por las tuyas.
+        const radioStations = [
+            // 🛑 La URL que proporcionaste (posiblemente bloqueada por CORS en GitHub Pages)
+            { 
+                name: "LOS40 (URL con posible bloqueo)", 
+                url: "https://21223.live.streamtheworld.com/LOS40_SC" 
+            },
+            // ✅ URL DE PRUEBA (Generalmente funcional para añadir más)
+            { 
+                name: "Radio de Prueba (Ejemplo MP3)", 
+                url: "https://streaming.radio.co/s215d2a9aa/listen" // Un stream público que suele funcionar
+            },
+            // ➕ AÑADE MÁS RADIOS AQUÍ siguiendo el mismo formato: { name: "Título", url: "https://enlace_directo_stream" }
+        ];
+
+        // --- 2. ELEMENTOS DEL DOM ---
+        const player = document.getElementById('audio-player');
+        const listContainer = document.getElementById('radio-list');
+        const currentTrackDisplay = document.getElementById('current-track');
+        
+        let currentActiveItem = null;
+
+        // --- 3. FUNCIÓN PRINCIPAL DE CARGA ---
+        function loadStation(station, listItem) {
+            // 1. Establecer la fuente de audio, cargarla e intentar reproducir
+            player.src = station.url;
+            player.load();
+            
+            const playPromise = player.play();
+            
+            // 2. Gestionar la reproducción y posibles errores (como el bloqueo de autoplay)
+            if (playPromise !== undefined) {
+                playPromise.then(_ => {
+                    // La reproducción automática fue exitosa
+                    console.log(`Reproduciendo: ${station.name}`);
+                }).catch(error => {
+                    // El navegador bloqueó la reproducción automática.
+                    console.error("Fallo al intentar reproducir automáticamente:", error);
+                    alert(`El navegador bloqueó la reproducción automática. Por favor, pulsa el botón PLAY en el reproductor. (Error: ${station.name})`);
+                });
+            }
+
+            // 3. Actualizar el título y el estilo de la lista
+            currentTrackDisplay.textContent = `Reproduciendo: ${station.name}`;
+
+            if (currentActiveItem) {
+                currentActiveItem.classList.remove('active');
+            }
+            listItem.classList.add('active');
+            currentActiveItem = listItem;
+        }
+
+        // --- 4. GENERAR LA LISTA EN HTML ---
+        radioStations.forEach(station => {
+            const listItem = document.createElement('li');
+            listItem.textContent = station.name;
+            
+            // Añadir el evento de click
+            listItem.addEventListener('click', () => {
+                loadStation(station, listItem);
+            });
+            
+            listContainer.appendChild(listItem);
+        });
+
+        // Opcional: Cargar automáticamente la primera radio al inicio (y pausar si el navegador lo exige)
+        if (radioStations.length > 0) {
+            const firstStation = radioStations[0];
+            const firstListItem = listContainer.querySelector('li');
+            
+            // Carga la URL, pero el usuario debe hacer click en la lista o en el play.
+            loadStation(firstStation, firstListItem);
+            player.pause(); // Pausamos inicialmente para evitar el bloqueo del navegador
+            currentTrackDisplay.textContent = `Lista cargada. Selecciona una radio para empezar.`;
+        }
+    </script>
+    
+</body>
+</html>
