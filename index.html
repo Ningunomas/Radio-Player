@@ -307,8 +307,6 @@
             </a>
 			<p>
 
-            <h3>Mantenimiento</h3>
-            <button onclick="clearLocalStorage()">Limpiar Configuración Local</button></p>
         </div>
     </div>
 
@@ -445,22 +443,30 @@
         /**
          * Aplana la estructura de datos agrupada y la ordena alfabéticamente.
          */
-        function flattenAndSortStations(groupedStations) {
-            let flattened = [];
-            let index = 0;
-            for (const country in groupedStations) {
-                groupedStations[country].forEach(station => {
-                    flattened.push({
-                        ...station,
-                        index: index++,
-                        country: country
-                    });
-                });
-            }
-            // Ordenar la lista plana alfabéticamente por nombre
-            flattened.sort((a, b) => a.name.localeCompare(b.name));
-            return flattened;
-        }
+		 function flattenAndSortStations(groupedStations) {
+    let flattened = [];
+    
+    // 1. Aplanar primero (sin asignar índice aún)
+    for (const country in groupedStations) {
+        groupedStations[country].forEach(station => {
+            flattened.push({
+                ...station,
+                // NO ASIGNAR EL ÍNDICE AQUÍ
+                country: country
+            });
+        });
+    }
+
+    // 2. Ordenar la lista plana alfabéticamente por nombre
+    flattened.sort((a, b) => a.name.localeCompare(b.name));
+    
+    // 3. Reasignar el índice a la posición final y ordenada
+    flattened.forEach((station, index) => {
+        station.index = index; // ¡Esto garantiza que el índice coincida con la posición en el array!
+    });
+    
+    return flattened;
+}
 
 
         /**
@@ -725,27 +731,53 @@
          * Selecciona una emisora y comienza la reproducción.
          */
         function selectStation(index) {
-            currentStation = STATIONS[index];
-            RADIO_PLAYER.src = currentStation.url;
-            STATION_NAME_DISPLAY.textContent = currentStation.name;
-            localStorage.setItem('lastStationIndex', index);
-            updateActiveState(index);
-            
-            // ⭐️ Cierra todos los desplegables al seleccionar una emisora
-            closeAllAccordionGroups(); 
+    if (!STATIONS[index]) return; // Control de seguridad
 
-            // Iniciar reproducción
-            RADIO_PLAYER.play().then(() => {
-                PLAY_PAUSE_BUTTON.textContent = '⏸️ Pausar';
-                isPlaying = true;
-                hasError = false;
-            }).catch(error => {
-                PLAY_PAUSE_BUTTON.textContent = '▶️ Iniciar';
-                isPlaying = false;
-                CURRENT_PLAYBACK_STATUS.textContent = 'Clic para iniciar';
-                console.warn('Fallo al iniciar el AutoPlay:', error);
-            });
-        }
+    // ... (Tu código existente que establece currentStation, URL, etc.)
+    currentStation = STATIONS[index];
+    RADIO_PLAYER.src = currentStation.url;
+    RADIO_PLAYER.load(); // Añadir .load() ayuda a forzar la recarga
+    STATION_NAME_DISPLAY.textContent = currentStation.name;
+    localStorage.setItem('lastStationIndex', index);
+    updateActiveState(index);
+    closeAllAccordionGroups();
+
+    // Iniciar reproducción
+    RADIO_PLAYER.play().then(() => {
+        // Éxito
+        PLAY_PAUSE_BUTTON.textContent = '⏸️ Pausar';
+        isPlaying = true;
+        hasError = false;
+    }).catch(error => {
+        // FALLO (Autoplay bloqueado)
+        console.warn('Primer intento fallido (Autoplay bloqueado). Intentando recarga silenciosa...');
+
+        // 🚨 NUEVA LÓGICA DE RECARGA SILENCIOSA 🚨
+        
+        // 1. Pausar y resetear (como un "Stop" rápido)
+        RADIO_PLAYER.pause();
+        RADIO_PLAYER.src = ''; 
+        
+        // 2. Volver a asignar la URL y forzar la carga
+        RADIO_PLAYER.src = currentStation.url;
+        RADIO_PLAYER.load(); 
+
+        // 3. Intentar reproducir DE NUEVO
+        RADIO_PLAYER.play().then(() => {
+            // Éxito en el segundo intento (el navegador lo permitió después del reset)
+            PLAY_PAUSE_BUTTON.textContent = '⏸️ Pausar';
+            isPlaying = true;
+            hasError = false;
+        }).catch(secondError => {
+            // Fallo definitivo (El navegador pide interacción SÍ o SÍ)
+            PLAY_PAUSE_BUTTON.textContent = '▶️ Iniciar';
+            isPlaying = false;
+            // Aquí es donde mostramos el mensaje de error de AutoPlay
+            CURRENT_PLAYBACK_STATUS.textContent = 'Clic para iniciar'; 
+            console.error('Fallo definitivo de AutoPlay:', secondError);
+        });
+    });
+}
 
         /**
          * Pausa o reanuda la reproducción.
@@ -902,6 +934,17 @@
         // Iniciar la aplicación al cargar el DOM
         document.addEventListener('DOMContentLoaded', initializePlayer);
     </script>
+
+<footer id="main-footer" style="text-align: center; padding: 20px; margin-top: 50px;">
+    <div class="copyright-area" style="font-size: 0.8em; color: #aaa;">
+        <p>
+            &copy; <span id="current-year"></span>Ningunomas. 
+            <br>
+            Código fuente distribuido bajo la <a href="https://opensource.org/licenses/MIT" target="_blank" rel="noopener noreferrer" 
+            style="color: #ccc; text-decoration: underline;">Licencia MIT</a>.
+        </p>
+    </div>
+</footer>
 
 </body>
 </html>
