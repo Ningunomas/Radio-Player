@@ -1,2 +1,19 @@
-24/10/2025
+# Registro de Cambios (Changelog) - Radio Player GFN ETS/ATS
+
+# 24/10/2025
 - Creado Reproductor y añadidas varias emisoras.
+
+## [v1.3.0] - 25-10-2025 (Reorganización de UI y Funcionalidad de Acordeón)
+
+### Añadido
+- **Categoría de Favoritos Separada (⭐):** Las emisoras favoritas ahora aparecen en un grupo de acordeón independiente y destacado en la parte superior de la lista.
+- **Botón Global 'Sugerir Nueva Emisora':** Se ha movido el formulario de sugerencia para que sea un botón principal, ubicado junto al enlace del Changelog, abriendo su propio panel de acordeón.
+- **Descripción Original del Proyecto:** Se ha restaurado la descripción original y el aviso legal sobre los streams.
+
+### Mejorado
+- **Usabilidad del Acordeón:** **Cierre Automático:** Al hacer clic en cualquier emisora, todos los grupos de acordeón (Favoritos, Países) se cierran automáticamente, mejorando el enfoque en la reproducción.
+- **Filtro:** La lógica de filtro ahora maneja correctamente la visibilidad del grupo de Favoritos.
+- **Estilos:** Ajustes de CSS para destacar visualmente el grupo de Favoritos.
+
+### Solucionado
+- Corregido: La lista de emisoras se mostraba previamente sin la separación y la funcionalidad de favoritos que el usuario tenía implementada.
