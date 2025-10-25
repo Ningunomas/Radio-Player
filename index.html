@@ -3,228 +3,279 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Radio Player ETS/ATS GFN - Comodidad [MEJORADO]</title>
+    <title>Radio Player GFN ETS/ATS - Actualizado</title>
     <style>
-        /* Estilos generales */
+        /* ========================================================== */
+        /* CSS (Estilos)                     */
+        /* ========================================================== */
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f4f7f6;
+            font-family: Arial, sans-serif;
             margin: 0;
             padding: 20px;
+            background-color: #2c3e50; /* Fondo oscuro */
+            color: #ecf0f1;
         }
 
-        /* Contenedor principal para la maquetación de dos columnas */
-        .main-layout {
+        #app-container {
             display: flex;
-            justify-content: center;
-            gap: 30px;
-            max-width: 1000px;
+            max-width: 1200px;
             margin: 0 auto;
+            gap: 20px;
+            background-color: #34495e; /* Contenedor principal */
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
         }
 
-        /* Estilos de la columna de radio */
-        .radio-column {
+        #radio-list-container {
             flex: 2;
-            max-width: 500px;
-            background-color: white;
-            padding: 25px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-            border-radius: 8px;
+            min-width: 300px;
         }
 
-        /* Estilos de la columna del aclaratorio */
-        .info-column {
+        #info-container {
             flex: 1;
-            min-width: 280px;
-            background-color: #ecf0f1;
-            padding: 25px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-            border-radius: 8px;
-            align-self: flex-start;
-        }
-        
-        /* Media Query para pantallas pequeñas (móviles) */
-        @media (max-width: 850px) {
-            .main-layout {
-                flex-direction: column;
-            }
-            .info-column {
-                order: -1;
-                min-width: unset;
-                margin-bottom: 20px;
-            }
+            min-width: 250px;
+            border-left: 1px solid #4a627d;
+            padding-left: 20px;
         }
 
-        /* --- Estilos del reproductor y listas --- */
-        h1 {
-            color: #2c3e50;
-            text-align: center;
+        h2, h3 {
+            color: #f1c40f;
+            border-bottom: 2px solid #f39c12;
+            padding-bottom: 5px;
             margin-top: 0;
         }
-        #audio-player {
-            width: 100%;
-            margin-bottom: 20px;
-        }
         
-        /* Contenedor del nombre de la radio y el icono */
-        #current-track-container { 
-            text-align: center;
-            margin-top: 15px;
-            font-size: 1.1em;
-            color: #555;
-            font-weight: 500;
-            min-height: 40px; 
-            margin-bottom: 20px;
-        }
-        #current-track {
-            display: inline;
-        }
-
-        /* Estilo para la barra de búsqueda */
+        /* Barra de Búsqueda */
         #search-bar {
             width: 96%;
-            padding: 10px 2%;
-            margin-bottom: 15px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            font-size: 1em;
-            box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
-            outline: none;
-        }
-        #search-bar:focus {
-            border-color: #3498db;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #7f8c8d;
+            background-color: #2c3e50;
+            color: #ecf0f1;
+            border-radius: 4px;
         }
 
-        /* Estilo para el icono de reproducción/carga */
-        #playing-indicator {
-            font-size: 1.2em;
-            margin-left: 10px;
-            vertical-align: middle;
-            color: #2ecc71; 
-            display: none; 
+        /* Lista de Emisoras */
+        #radio-list {
+            max-height: 70vh; /* Altura máxima para hacer scroll */
+            overflow-y: auto;
         }
-
-        /* Animación para el icono de carga */
-        .loading-animation {
-            animation: spin 1s infinite linear;
-        }
-        @keyframes spin {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-
-        /* Estilos del Acordeón/Grupos de País */
-        .country-header {
-            background-color: #3498db;
-            color: white;
-            padding: 15px;
-            cursor: pointer;
-            font-size: 1.1em;
-            font-weight: bold;
-            border-radius: 8px; 
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1); 
-            margin-top: 10px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            transition: background-color 0.2s;
-        }
-        .country-header:hover {
-            background-color: #2980b9;
-        }
-        /* Color especial para Favoritos */
-        #favorites-header {
-            background-color: #f39c12; /* Naranja/Amarillo */
-        }
-        #favorites-header:hover {
-            background-color: #e67e22; 
-        }
-
-        .toggle-icon {
-            font-size: 1.2em;
-            transition: transform 0.3s;
-        }
-        .country-header.active .toggle-icon {
-            transform: rotate(90deg);
-        }
-
-        /* Lista base (oculta) */
-        .radio-list {
+        
+        #radio-list ul {
             list-style: none;
             padding: 0;
             margin: 0;
-            border: 1px solid #ddd;
-            border-top: none;
-            max-height: 0;
-            overflow: hidden; 
-            transition: max-height 0.4s ease-in-out; 
-            border-radius: 0 0 8px 8px; 
-        }
-
-        /* Lista abierta (visible con scroll) */
-        .radio-list.open {
-            max-height: 1500px; 
-            border-top: 1px solid #ddd;
-            overflow-y: auto; 
-        }
-
-        .radio-list li {
-            padding: 12px 15px;
-            border-bottom: 1px solid #eee;
-            cursor: pointer;
-            transition: background-color 0.15s;
-            display: flex; /* Para alinear el nombre y el botón de favorito */
-            justify-content: space-between;
-            align-items: center;
-        }
-        .radio-list li:last-child {
-            border-bottom: none;
-        }
-        .radio-list li:hover {
-            background-color: #ecf0f1;
-        }
-
-        /* Indicador de emisora activa */
-        .radio-list .active-station {
-            background-color: #2ecc71; /* Verde */
-            color: white;
-            font-weight: bold;
-        }
-        /* Icono en la lista */
-        .radio-list .active-station .station-name::before {
-            content: '🔊 '; 
-            color: white;
-            font-weight: bold;
-        }
-
-        /* Botón de Favorito */
-        .favorite-btn {
-            background: none;
-            border: none;
-            cursor: pointer;
-            font-size: 1.2em;
-            padding: 0 5px;
-            line-height: 1;
-            transition: transform 0.1s;
-        }
-        .favorite-btn:hover {
-            transform: scale(1.1);
-        }
-        /* Estilo para la emisora dentro de la lista (para que el botón no herede el color de .active-station) */
-        .station-name {
-            flex-grow: 1;
-        }
-        .active-station .favorite-btn {
-            color: white;
         }
         
+        /* Encabezado del Grupo (Acordeón) */
+        .accordion-group-header {
+            background-color: #4a627d;
+            color: #ecf0f1;
+            padding: 10px;
+            cursor: pointer;
+            border-bottom: 1px solid #34495e;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: bold;
+            margin-top: 5px;
+        }
+        
+        /* Contenido del Grupo (Lista de Estaciones) */
+        .accordion-group-content {
+            display: none; /* Inicialmente oculto */
+        }
+        
+        /* Estilo especial para el grupo de Favoritos */
+        #content-favoritos {
+            background-color: #3e5163;
+        }
+        
+        #header-favoritos {
+             background-color: #f39c12;
+             color: #2c3e50;
+        }
+
+
+        .station-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 10px;
+            cursor: pointer;
+            border-bottom: 1px solid #4a627d;
+            background-color: #34495e; /* Fondo de la lista */
+            transition: background-color 0.2s;
+        }
+        
+        /* Ajuste de fondo para ítems de Favoritos */
+        #content-favoritos .station-item {
+            background-color: #3e5163;
+        }
+
+        .station-item:hover {
+            background-color: #4a627d;
+        }
+        
+        #content-favoritos .station-item:hover {
+            background-color: #4a627d;
+        }
+
+        .station-item.active {
+            background-color: #27ae60; /* Verde activo */
+            color: #fff;
+            font-weight: bold;
+        }
+        
+        /* Iconos */
+        .station-icon {
+            font-size: 1.2em;
+            margin-left: 10px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .station-error-indicator {
+            color: #e74c3c; /* Rojo para el indicador de error */
+        }
+        
+        .station-favorite-indicator {
+            color: #f1c40f; /* Amarillo para el favorito */
+        }
+
+        .station-icon:hover {
+            transform: scale(1.2);
+        }
+
+        /* Controles de Audio */
+        #controls {
+            padding-bottom: 20px;
+            border-bottom: 1px solid #4a627d;
+            margin-bottom: 20px;
+        }
+
+        #controls button {
+            background-color: #e67e22;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            margin-right: 10px;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: background-color 0.2s;
+        }
+
+        #controls button:hover {
+            background-color: #d35400;
+        }
+
+        /* Botones Globales (Changelog y Sugerencia) */
+        .global-link-button {
+            display: block;
+            margin-top: 10px;
+            padding: 8px;
+            text-align: center;
+            background-color: #f1c40f;
+            color: #2c3e50;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .global-link-button:hover {
+            background-color: #f39c12;
+        }
+        
+        /* Acordeón para Sugerencia (Ahora en Info Container) */
+        .accordion-content {
+            background-color: #2c3e50;
+            padding: 15px;
+            border: 1px solid #4a627d;
+            border-top: none;
+            border-radius: 0 0 4px 4px;
+            display: none;
+            overflow: hidden;
+        }
+
+        .accordion-content label, .accordion-content input, .accordion-content button {
+            display: block;
+            width: 100%;
+            margin-bottom: 10px;
+        }
+        
+        /* Modal (Popup) */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 100;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.6);
+        }
+
+        .modal-content {
+            background-color: #34495e;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 400px;
+            border-radius: 8px;
+            position: relative;
+        }
+
+        .close-button {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close-button:hover, .close-button:focus {
+            color: #fff;
+            text-decoration: none;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
 
-    <div class="main-layout">
-        
-        <div class="info-column">
+    <audio id="radio-player" preload="none"></audio>
+
+    <div id="app-container">
+        <div id="radio-list-container">
+            <h2>Emisoras Disponibles</h2>
+            
+            <div id="controls">
+                <p>Volumen: <span id="volume-display">100%</span></p>
+                <input type="range" id="volume-slider" min="0" max="100" value="100">
+                <br><br>
+                <button id="play-pause-button">▶️ Iniciar</button>
+                <button id="stop-button">⏹️ Detener</button>
+                <span id="current-playback-status" style="margin-left: 10px; color: #f1c40f;">Detenido</span>
+            </div>
+
+            <input type="text" id="search-bar" placeholder="Buscar emisora o país..." onkeyup="filterStations()">
+
+            <div id="radio-list">
+                </div>
+        </div>
+
+        <div id="info-container">
+            <h3>Información Actual</h3>
+            
+            <div id="current-station">
+                <p>Reproduciendo:</p>
+                <h4 id="station-name-display">Ninguna</h4>
+            </div>
+
             <h2>📜 Aclaración del Proyecto</h2>
             <p style="font-size: 0.9em; line-height: 1.5;">
                 Este reproductor ha sido creado para facilitar la adición de radio en vivo en <strong>Euro Truck Simulator 2 (ETS 2)</strong> y <strong>American Truck Simulator (ATS)</strong>, especialmente para usuarios de <strong>NVIDIA GeForce NOW (GFN)</strong>.
@@ -233,36 +284,73 @@
             <p style="font-size: 0.9em; line-height: 1.5; border-left: 3px solid #f39c12; padding-left: 10px;">
                 ⚠️ <strong>Aviso Importante:</strong> Las radios son <strong>streams</strong> públicos de terceros. Si hay algún <strong>problema de copyright o legal</strong>, la emisora será <strong>retirada inmediatamente</strong>.
             </p>
+
+            <a id="suggest-link" class="global-link-button" onclick="toggleAccordion('suggestion-content')">
+                Sugerir Nueva Emisora
+            </a>
             
-            <p style="font-size: 0.9em; line-height: 1.5;">
-                <strong>¿Quieres más canales?</strong> ¡Genial! Deja un comentario en Steam o abre una <strong>Issue</strong> en GitHub, con el <strong>nombre</strong> y la <strong>URL directa</strong> del <strong>stream</strong>.
-                <p>
-                GitHub: <strong><a href="https://github.com/Ningunomas/Radio-Player" target="_blank">Click aquí</a></strong>
-                Steam: <strong><a href="https://steamcommunity.com/sharedfiles/filedetails/?id=3592724079" target="_blank">Click aquí</a></strong>
+            <div id="suggestion-content" class="accordion-content">
+                <p style="font-size: 0.85em; color: #bdc3c7;">
+                    El texto se copiará automáticamente al portapapeles. Luego, pégalo en el foro de Steam.
                 </p>
-            </p>
+                <label for="new-station-name">Nombre de la Emisora:</label>
+                <input type="text" id="new-station-name" placeholder="Ej: Radio España FM">
+
+                <label for="new-station-url">URL del Stream:</label>
+                <input type="text" id="new-station-url" placeholder="Ej: https://stream.ejemplo.com/live">
+
+                <button onclick="copySuggestionToClipboard()">Copiar Sugerencia e Ir a Steam</button>
+            </div>
+
+            <a id="changelog-link" class="global-link-button" href="https://github.com/Ningunomas/Radio-Player/blob/main/ChangeLog" target="_blank">
+                Registro de Cambios (Changelog)
+            </a>
+			<p>
+
+            <h3>Mantenimiento</h3>
+            <button onclick="clearLocalStorage()">Limpiar Configuración Local</button></p>
         </div>
+    </div>
 
-        <div class="radio-column">
-            <h1>🚚 Radio por País (ETS/ATS GFN)</h1>
-
-            <audio id="audio-player" controls autoplay muted></audio>
+    <div id="report-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" onclick="closeModal('report-modal')">&times;</span>
+            <h3>Reportar Emisora Caída</h3>
+            <p>Vas a reportar la emisora:</p>
+            <h4 id="report-station-name"></h4>
+            <p style="font-size: 0.9em;">
+                URL del Stream: <span id="report-url-display"></span>
+            </p>
             
-            <p id="current-track-container">
-                <span id="current-track">Selecciona una emisora de la lista.</span>
-                <span id="playing-indicator" class="toggle-icon">🔊</span> 
+            <p><strong>1. Copiar el texto:</strong> Haz clic para copiar el reporte completo al portapapeles.</p>
+            <button id="copy-report-button" onclick="copyReportToClipboard()">Copiar Mensaje al Portapapeles</button>
+            
+            <p><strong>2. Publicar en Steam:</strong> Haz clic para ir al hilo de reportes. **Una vez allí, simplemente pega el texto y publica.**</p>
+            <a id="go-to-steam-button" href="#" target="_blank">
+                <button>Ir a la Sección de Reportes de Steam</button>
+            </a>
+            <p id="copy-status" style="color: #27ae60; font-weight: bold; margin-top: 10px; display: none;">
+                ¡Reporte Copiado! Ahora haz clic en 'Ir a Steam'.
             </p>
-
-            <input type="text" id="search-bar" placeholder="🔍 Buscar emisora por nombre...">
-
-            <div id="grouped-radio-container">
-                </div>
         </div>
-
     </div>
 
     <script>
-        // --- 1. ESTRUCTURA DE DATOS AGRUPADA POR PAÍS (INCLUYE TODAS LAS RADIOS) ---
+        /* ========================================================== */
+        /* JAVASCRIPT (Lógica)                  */
+        /* ========================================================== */
+        
+        // --- CONSTANTES DE CONFIGURACIÓN ---
+        const STEAM_REPORT_URL = 'https://steamcommunity.com/workshop/filedetails/discussion/3592954440/597415360364625741/';
+        const RADIO_PLAYER = document.getElementById('radio-player');
+        const PLAY_PAUSE_BUTTON = document.getElementById('play-pause-button');
+        const STOP_BUTTON = document.getElementById('stop-button');
+        const VOLUME_SLIDER = document.getElementById('volume-slider');
+        const VOLUME_DISPLAY = document.getElementById('volume-display');
+        const STATION_NAME_DISPLAY = document.getElementById('station-name-display');
+        const CURRENT_PLAYBACK_STATUS = document.getElementById('current-playback-status');
+
+        // --- ESTRUCTURA DE DATOS AGRUPADA POR PAÍS ---
         const ALL_STATIONS_DATA = {
             "España 🇪🇸": [
                 { name: "Los 40 Principales", url: "https://21223.live.streamtheworld.com/LOS40_SC" },
@@ -279,7 +367,7 @@
                 { name: "Europa FM", url: "http://stm1.emiteonline.com:8001/europafmhuelva" },
                 { name: "Cadena Dial", url: "https://20073.live.streamtheworld.com/CADENADIAL_SC" },
                 { name: "Radio Ole", url: "http://21633.live.streamtheworld.com/RADIOLE.mp3" },
-                { name: "Gozadera FM", url: "https://azura.abcorp.es/radio/8070/live" },
+                { name: "Gozadera FM", url: "https://streaming.shoutcast.com/gozadera" },
                 { name: "Bikini FM", url: "https://stream.mediasector.es/radio/8030/bikinifm.mp3?1585784696" },
                 { name: "Radio Marca", url: "https://playerservices.streamtheworld.com/api/livestream-redirect/RADIOMARCA_NACIONAL.mp3?dist=onlineradiobox" },
                 { name: "Love 90", url: "https://c6.auracast.net/radio/8090/radio.mp3" },
@@ -309,7 +397,6 @@
                 { name: "Hits Radio Liberia", url: "https://s4.radio.co/sada156669/listen" },
                 { name: "Radio Romanul", url: "http://streaming.radioromanul.es:55556/web" },
                 { name: "J-Pop Powerplay", url: "https://kathy.torontocast.com:3560/;" },
-                { name: "Hits Radio Liberia", url: "https://s4.radio.co/sada156669/listen" },
                 { name: "Splash Coffee", url: "https://ais-sa2.cdnstream1.com/2345_128.mp3" },
                 { name: "Generations Rap Français", url: "https://generationfm-rap.ice.infomaniak.ch/generationfm-rap-high.mp3" },
                 { name: "Future Groove FM", url: "https://streamer.radio.co/s4b3dafa6d/listen" },
@@ -321,256 +408,500 @@
             ]
         };
 
-        // --- 2. ELEMENTOS DEL DOM y Variables ---
-        const player = document.getElementById('audio-player');
-        const container = document.getElementById('grouped-radio-container');
-        const currentTrackDisplay = document.getElementById('current-track');
-        const playingIndicator = document.getElementById('playing-indicator'); 
-        const searchBar = document.getElementById('search-bar'); // Nueva barra de búsqueda
+        let STATIONS = []; // Lista plana y ordenada para el manejo interno de index.
+        let currentStation = null;
+        let isPlaying = false;
+        let hasError = false;
+
+        /**
+         * Inicializa el reproductor, carga emisoras y recupera la configuración local.
+         */
+        function initializePlayer() {
+            // Aplanar la estructura y ordenar alfabéticamente
+            STATIONS = flattenAndSortStations(ALL_STATIONS_DATA);
+            
+            loadStations(); // Cargar la lista visual agrupada (con desplegables)
+            loadLocalStorage();
+            
+            // Asignar eventos a los controles
+            VOLUME_SLIDER.addEventListener('input', setVolume);
+            PLAY_PAUSE_BUTTON.addEventListener('click', togglePlayPause);
+            STOP_BUTTON.addEventListener('click', stopPlayback);
+
+            // Detección de Errores
+            RADIO_PLAYER.addEventListener('error', handleStreamError);
+            RADIO_PLAYER.addEventListener('playing', () => { 
+                CURRENT_PLAYBACK_STATUS.textContent = 'Reproduciendo';
+                hasError = false;
+            });
+            RADIO_PLAYER.addEventListener('waiting', () => { 
+                CURRENT_PLAYBACK_STATUS.textContent = 'Cargando...';
+            });
+            RADIO_PLAYER.addEventListener('pause', () => { 
+                if(!hasError) CURRENT_PLAYBACK_STATUS.textContent = 'Pausado';
+            });
+        }
         
-        let currentActiveItem = null;
+        /**
+         * Aplana la estructura de datos agrupada y la ordena alfabéticamente.
+         */
+        function flattenAndSortStations(groupedStations) {
+            let flattened = [];
+            let index = 0;
+            for (const country in groupedStations) {
+                groupedStations[country].forEach(station => {
+                    flattened.push({
+                        ...station,
+                        index: index++,
+                        country: country
+                    });
+                });
+            }
+            // Ordenar la lista plana alfabéticamente por nombre
+            flattened.sort((a, b) => a.name.localeCompare(b.name));
+            return flattened;
+        }
 
-        // --- 3. FUNCIONES DE GESTIÓN DE FAVORITOS (LocalStorage) ---
 
-        /** Obtiene el array de URLs favoritas desde LocalStorage */
+        /**
+         * Obtiene la lista de favoritos del Local Storage.
+         */
         function getFavorites() {
-            try {
-                const favorites = localStorage.getItem('radioFavorites');
-                return favorites ? JSON.parse(favorites) : [];
-            } catch (e) {
-                console.error("Error al obtener favoritos:", e);
-                return [];
-            }
+            const favoritesJSON = localStorage.getItem('radioFavorites');
+            return favoritesJSON ? JSON.parse(favoritesJSON) : [];
         }
 
-        /** Guarda el array de URLs favoritas en LocalStorage */
-        function saveFavorites(favoritesArray) {
-            try {
-                localStorage.setItem('radioFavorites', JSON.stringify(favoritesArray));
-            } catch (e) {
-                console.error("Error al guardar favoritos:", e);
-            }
-        }
-
-        /** Alterna el estado de una emisora (Añadir/Quitar) */
-        function toggleFavorite(station, btn) {
+        /**
+         * Crea el HTML para la lista de emisoras, incluyendo la categoría de Favoritos.
+         */
+        function loadStations() {
+            const listContainer = document.getElementById('radio-list');
+            listContainer.innerHTML = '';
+            
             const favorites = getFavorites();
-            const index = favorites.findIndex(fav => fav.url === station.url);
+
+            // ⭐️ 1. CATEGORÍA DE FAVORITOS
+            const favoriteStations = STATIONS.filter(s => favorites.some(fav => fav.url === s.url))
+                                              .sort((a, b) => a.name.localeCompare(b.name)); // Ordenar favoritos alfabéticamente
+            
+            // Si hay favoritos, crear el grupo
+            if (favoriteStations.length > 0) {
+                createStationGroup(listContainer, "Favoritos ⭐", "favoritos", favoriteStations);
+            }
+            
+            // 2. CATEGORÍAS POR PAÍS (Usando ALL_STATIONS_DATA para la estructura visual)
+            for (const country in ALL_STATIONS_DATA) {
+                // Filtrar las emisoras de la lista plana (STATIONS) que coincidan con el país
+                const stationsInCountry = STATIONS.filter(s => s.country === country);
+                // Ordenar el grupo alfabéticamente
+                stationsInCountry.sort((a, b) => a.name.localeCompare(b.name));
+                
+                // Crear el grupo del país
+                createStationGroup(listContainer, country, country.replace(/\s/g, '-'), stationsInCountry);
+            }
+
+            // Asignar eventos a los iconos
+            assignIconEvents();
+        }
+        
+        /**
+         * Función auxiliar para crear un grupo de acordeón (país o favoritos).
+         */
+        function createStationGroup(listContainer, title, idPrefix, stationList) {
+            const header = document.createElement('div');
+            header.className = 'accordion-group-header';
+            header.id = `header-${idPrefix.toLowerCase()}`;
+            header.textContent = title;
+            header.dataset.target = `content-${idPrefix.toLowerCase()}`;
+            header.onclick = function() { toggleAccordionGroup(this.dataset.target); };
+            listContainer.appendChild(header);
+
+            const content = document.createElement('div');
+            content.id = header.dataset.target;
+            content.className = 'accordion-group-content';
+            listContainer.appendChild(content);
+
+            const ul = document.createElement('ul');
+            const favorites = getFavorites(); // Recargar favoritos para el estado del icono
+
+            stationList.forEach(station => {
+                const isFavorite = favorites.some(fav => fav.url === station.url);
+                
+                const li = document.createElement('li');
+                li.className = 'station-item';
+                li.dataset.index = station.index; 
+                li.dataset.country = station.country; // Para búsqueda
+                li.innerHTML = `
+                    <span>${station.name}</span>
+                    <span class="report-group">
+                        <span class="station-icon station-favorite-indicator" 
+                              title="${isFavorite ? 'Quitar de Favoritos' : 'Añadir a Favoritos'}" 
+                              data-station-url="${station.url}">
+                              ${isFavorite ? '⭐' : '☆'}
+                        </span>
+                        <span class="station-icon station-error-indicator" 
+                              title="Reportar emisora caída" 
+                              data-station-name="${station.name}" 
+                              data-station-url="${station.url}">
+                              ❌
+                        </span>
+                    </span>
+                `;
+                li.addEventListener('click', (e) => {
+                    if (!e.target.classList.contains('station-icon')) {
+                        selectStation(parseInt(e.currentTarget.dataset.index));
+                    }
+                });
+                ul.appendChild(li);
+            });
+            content.appendChild(ul);
+        }
+        
+        /**
+         * Asigna eventos a los iconos (Reporte y Favorito).
+         */
+        function assignIconEvents() {
+            // Lógica de Reporte Rápido
+            document.querySelectorAll('.station-error-indicator').forEach(indicator => {
+                indicator.onclick = (e) => {
+                    e.stopPropagation(); 
+                    openReportModal(e.target.dataset.stationName, e.target.dataset.stationUrl);
+                };
+            });
+            
+            // Lógica de Favoritos
+            document.querySelectorAll('.station-favorite-indicator').forEach(indicator => {
+                indicator.onclick = (e) => {
+                    e.stopPropagation();
+                    toggleFavorite(e.target.dataset.stationUrl, e.target);
+                    // Recargar la lista para actualizar el grupo de Favoritos
+                    loadStations(); 
+                };
+            });
+        }
+        
+        /**
+         * Añade o quita una emisora de la lista de favoritos.
+         */
+        function toggleFavorite(url, element) {
+            let favorites = getFavorites();
+            const station = STATIONS.find(s => s.url === url);
+
+            if (!station) return;
+
+            const index = favorites.findIndex(fav => fav.url === url);
 
             if (index > -1) {
                 // Quitar de favoritos
                 favorites.splice(index, 1);
-                btn.textContent = '☆';
+                element.textContent = '☆';
+                element.title = 'Añadir a Favoritos';
             } else {
                 // Añadir a favoritos
-                favorites.push(station);
-                btn.textContent = '★';
+                favorites.push({ name: station.name, url: station.url });
+                element.textContent = '⭐';
+                element.title = 'Quitar de Favoritos';
             }
-            saveFavorites(favorites);
-            renderRadioLists(); // Volver a dibujar para actualizar la sección Favoritos
-        }
 
-        // --- 4. FUNCIÓN PRINCIPAL DE REPRODUCCIÓN ---
-        function loadStation(station, listItem, radioList, header) {
-            
-            // 1. Mostrar estado de Carga con icono giratorio
-            currentTrackDisplay.textContent = `Cargando: ${station.name}...`;
-            playingIndicator.textContent = '🔃'; 
-            playingIndicator.classList.add('loading-animation'); 
-            playingIndicator.style.display = 'inline';
-            
-            // 2. Establecer fuente, forzar la carga y QUITAR el silencio
-            player.src = station.url;
-            player.load();
-            player.muted = false; 
-            
-            // 3. Intentar Reproducir y Gestionar ÉXITO/FALLO
-            player.play().then(() => {
-                // ÉXITO
-                currentTrackDisplay.textContent = `Reproduciendo: ${station.name}`;
-                playingIndicator.textContent = '🔊'; 
-                playingIndicator.classList.remove('loading-animation');
-            }).catch(error => {
-                // FALLO (CORS/Autoplay/Otros)
-                console.error("Fallo al reproducir:", error);
-                
-                // Mensaje de error útil
-                currentTrackDisplay.innerHTML = `🛑 <strong>Error de Conexión/CORS</strong> en <strong>${station.name}</strong>. 
-                                                 <br> Intenta pulsar <strong>PLAY</strong> en el reproductor de arriba.`;
-                playingIndicator.style.display = 'none'; 
-            });
-            
-            // 4. Actualizar el estilo de la lista (marcar la activa)
-            if (currentActiveItem) {
-                currentActiveItem.classList.remove('active-station');
+            localStorage.setItem('radioFavorites', JSON.stringify(favorites));
+        }
+        
+        /**
+         * ⭐️ Alterna la visibilidad de un grupo de acordeón (País o Favoritos).
+         */
+        function toggleAccordionGroup(id) {
+            const content = document.getElementById(id);
+            if (content.style.display === "block") {
+                content.style.display = "none";
+            } else {
+                content.style.display = "block";
             }
-            // Debemos buscar el elemento en la lista que coincida con la URL actual para marcarlo
-            document.querySelectorAll('li').forEach(li => {
-                if (li.dataset.url === station.url) {
-                     li.classList.add('active-station');
-                     currentActiveItem = li;
-                }
-            });
-            
-            // 5. CIERRE AUTOMÁTICO
-            radioList.classList.remove('open');
-            header.classList.remove('active');
         }
-
-        // --- 5. FUNCIÓN DE RENDERIZADO (DIBUJA LAS LISTAS) ---
-        function renderRadioLists() {
-            container.innerHTML = ''; // Limpia el contenedor
-
-            const favorites = getFavorites();
-            
-            // Prepara las emisoras a dibujar (incluyendo Favoritos)
-            const stationsToRender = {
-                "⭐ Favoritos": favorites,
-                ...ALL_STATIONS_DATA
-            };
-
-            Object.keys(stationsToRender).forEach(country => {
-                const stations = stationsToRender[country];
-                
-                const header = document.createElement('div');
-                header.className = 'country-header';
-                if (country === "⭐ Favoritos") {
-                    header.id = 'favorites-header'; 
-                }
-                header.innerHTML = `${country} <span class="toggle-icon">▶</span>`;
-                
-                const radioList = document.createElement('ul');
-                radioList.className = 'radio-list';
-
-                // Evento para abrir/cerrar el desplegable
-                header.addEventListener('click', () => {
-                    radioList.classList.toggle('open');
-                    header.classList.toggle('active');
-                    
-                    // Cierra otros desplegables abiertos
-                    document.querySelectorAll('.radio-list.open').forEach(list => {
-                        if (list !== radioList) {
-                            list.classList.remove('open');
-                            list.previousElementSibling.classList.remove('active');
-                        }
-                    });
-                });
-
-                // Recorrer las emisoras de ese país
-                stations.forEach(station => {
-                    const listItem = document.createElement('li');
-                    listItem.dataset.url = station.url; // Usamos el atributo data-url para identificar
-                    
-                    const stationNameSpan = document.createElement('span');
-                    stationNameSpan.className = 'station-name';
-                    stationNameSpan.textContent = station.name;
-
-                    const favoriteBtn = document.createElement('button');
-                    favoriteBtn.className = 'favorite-btn';
-                    
-                    // Lógica para mostrar si está en favoritos
-                    const isFavorite = favorites.some(fav => fav.url === station.url);
-                    favoriteBtn.textContent = isFavorite ? '★' : '☆'; // Relleno si es favorito
-
-                    favoriteBtn.addEventListener('click', (e) => {
-                        e.stopPropagation(); // Evita que se reproduzca al marcar
-                        toggleFavorite(station, favoriteBtn);
-                    });
-                    
-                    // Asignar la función de reproducción al hacer click
-                    stationNameSpan.addEventListener('click', () => {
-                        loadStation(station, listItem, radioList, header); 
-                    });
-                    
-                    listItem.appendChild(stationNameSpan);
-                    listItem.appendChild(favoriteBtn);
-                    radioList.appendChild(listItem);
-
-                    // Si esta es la emisora activa, marcamos el estilo
-                    if (currentActiveItem && currentActiveItem.dataset.url === station.url) {
-                        listItem.classList.add('active-station');
-                        currentActiveItem = listItem; // Mantenemos la referencia
-                    }
-                });
-
-                container.appendChild(header);
-                container.appendChild(radioList);
+        
+        /**
+         * Cierra todos los grupos de acordeón.
+         */
+        function closeAllAccordionGroups() {
+             document.querySelectorAll('.accordion-group-content').forEach(content => {
+                content.style.display = 'none';
             });
         }
         
-        // --- 6. FUNCIÓN DE BÚSQUEDA Y FILTRADO (MEJORA UX) ---
+        /**
+         * Filtra las emisoras basadas en el texto de búsqueda.
+         */
         function filterStations() {
-            const query = searchBar.value.toLowerCase();
-            const allListItems = document.querySelectorAll('.radio-list li');
+            const searchText = document.getElementById('search-bar').value.toLowerCase();
+            const allItems = document.querySelectorAll('.station-item');
 
-            allListItems.forEach(item => {
-                const stationName = item.querySelector('.station-name').textContent.toLowerCase();
+            allItems.forEach(item => {
+                const name = item.querySelector('span:first-child').textContent.toLowerCase();
+                const country = item.dataset.country.toLowerCase();
                 
-                if (stationName.includes(query)) {
-                    item.style.display = 'flex'; // Muestra el elemento (usamos flex por el diseño)
-                    
-                    // Si se encuentra un resultado, abre la cabecera del país automáticamente
-                    const parentList = item.closest('.radio-list');
-                    if (parentList) {
-                        parentList.classList.add('open');
-                        parentList.previousElementSibling.classList.add('active');
-                    }
-                } else {
-                    item.style.display = 'none'; // Oculta el elemento
+                const isMatch = name.includes(searchText) || country.includes(searchText);
+                item.style.display = isMatch ? 'flex' : 'none';
+                
+                // Manejar la visibilidad de los grupos durante la búsqueda
+                const groupContent = item.closest('.accordion-group-content');
+                if (groupContent) {
+                    // Si hay búsqueda, expandir los grupos que contienen resultados
+                    groupContent.style.display = searchText.length > 0 ? 'block' : 'none';
                 }
             });
             
-            // Si la búsqueda está vacía, resetea todas las listas
-            if (query === '') {
-                 document.querySelectorAll('.radio-list, .country-header').forEach(el => {
-                    el.classList.remove('open', 'active');
+            // Si la búsqueda está vacía, colapsar todos los grupos
+            if (searchText.length === 0) {
+                closeAllAccordionGroups();
+                // Asegurarse de que el grupo de favoritos se muestre por defecto si hay favoritos
+                const favContent = document.getElementById('content-favoritos');
+                if (favContent) favContent.style.display = 'block';
+            }
+        }
+
+        /**
+         * 1. Lógica de URL Truncada (Opción B del usuario)
+         * Trunca una URL para mostrar el inicio y el final separados por elipsis.
+         */
+        function truncateUrl(url, startChars = 20, endChars = 15) {
+            if (url.length <= startChars + endChars + 3) {
+                return url;
+            }
+            const start = url.slice(0, startChars);
+            const end = url.slice(-endChars);
+            return `${start}...${end}`;
+        }
+
+        /**
+         * Recupera el volumen y la última emisora del Local Storage.
+         */
+        function loadLocalStorage() {
+            const savedVolume = localStorage.getItem('radioVolume');
+            const savedIndex = localStorage.getItem('lastStationIndex');
+
+            if (savedVolume !== null) {
+                VOLUME_SLIDER.value = savedVolume;
+                RADIO_PLAYER.volume = savedVolume / 100;
+                VOLUME_DISPLAY.textContent = `${savedVolume}%`;
+            }
+
+            // Usar la lista plana STATIONS
+            if (savedIndex !== null && STATIONS[savedIndex]) {
+                currentStation = STATIONS[savedIndex];
+                STATION_NAME_DISPLAY.textContent = currentStation.name;
+                updateActiveState(parseInt(savedIndex));
+                // Opcional: precargar la URL sin iniciar
+                RADIO_PLAYER.src = currentStation.url;
+            }
+            
+            // Mostrar el grupo de favoritos por defecto al cargar (si hay)
+            const favContent = document.getElementById('content-favoritos');
+            if (favContent) favContent.style.display = 'block';
+        }
+
+        /**
+         * Actualiza el volumen y lo guarda en Local Storage.
+         */
+        function setVolume() {
+            const vol = VOLUME_SLIDER.value;
+            RADIO_PLAYER.volume = vol / 100;
+            VOLUME_DISPLAY.textContent = `${vol}%`;
+            localStorage.setItem('radioVolume', vol);
+        }
+        
+        /**
+         * Maneja los errores de stream.
+         */
+        function handleStreamError() {
+            if (currentStation) {
+                hasError = true;
+                CURRENT_PLAYBACK_STATUS.textContent = '❌ ERROR: Stream Caído. Reporte usando la X.';
+                PLAY_PAUSE_BUTTON.textContent = '▶️ Iniciar';
+                isPlaying = false;
+                console.error(`Error al cargar o reproducir la emisora: ${currentStation.name}`);
+            }
+        }
+
+        /**
+         * Selecciona una emisora y comienza la reproducción.
+         */
+        function selectStation(index) {
+            currentStation = STATIONS[index];
+            RADIO_PLAYER.src = currentStation.url;
+            STATION_NAME_DISPLAY.textContent = currentStation.name;
+            localStorage.setItem('lastStationIndex', index);
+            updateActiveState(index);
+            
+            // ⭐️ Cierra todos los desplegables al seleccionar una emisora
+            closeAllAccordionGroups(); 
+
+            // Iniciar reproducción
+            RADIO_PLAYER.play().then(() => {
+                PLAY_PAUSE_BUTTON.textContent = '⏸️ Pausar';
+                isPlaying = true;
+                hasError = false;
+            }).catch(error => {
+                PLAY_PAUSE_BUTTON.textContent = '▶️ Iniciar';
+                isPlaying = false;
+                CURRENT_PLAYBACK_STATUS.textContent = 'Clic para iniciar';
+                console.warn('Fallo al iniciar el AutoPlay:', error);
+            });
+        }
+
+        /**
+         * Pausa o reanuda la reproducción.
+         */
+        function togglePlayPause() {
+            if (currentStation === null) return; 
+
+            if (isPlaying) {
+                RADIO_PLAYER.pause();
+                PLAY_PAUSE_BUTTON.textContent = '▶️ Iniciar';
+                isPlaying = false;
+            } else {
+                RADIO_PLAYER.play().then(() => {
+                    PLAY_PAUSE_BUTTON.textContent = '⏸️ Pausar';
+                    isPlaying = true;
+                    hasError = false;
+                }).catch(error => {
+                    CURRENT_PLAYBACK_STATUS.textContent = 'Error de reproducción o AutoPlay bloqueado';
+                    console.error('Error al intentar reproducir:', error);
                 });
             }
         }
-        
-        // --- 7. INICIALIZACIÓN DEL REPRODUCTOR (REFRACTORING) ---
-        function initPlayer() {
-            // A. Dibujar todas las listas (incluyendo favoritos)
-            renderRadioLists();
-            
-            // B. Eventos de la barra de búsqueda
-            searchBar.addEventListener('keyup', filterStations);
 
-            // C. Eventos globales del reproductor (ya implementados)
-            player.addEventListener('pause', () => {
-                playingIndicator.style.display = 'none';
-            });
-            
-            player.addEventListener('play', () => {
-                if (player.src && player.currentTime > 0) {
-                    playingIndicator.textContent = '🔊';
-                    playingIndicator.classList.remove('loading-animation');
-                    playingIndicator.style.display = 'inline';
-                }
-            });
-
-            player.addEventListener('waiting', () => {
-                if (player.src && !player.paused) {
-                    playingIndicator.textContent = '🔃';
-                    playingIndicator.classList.add('loading-animation');
-                }
-            });
-
-            player.addEventListener('playing', () => {
-                if (player.src && !player.paused) {
-                    playingIndicator.textContent = '🔊';
-                    playingIndicator.classList.remove('loading-animation');
-                }
-            });
-
-            // Ocultar el indicador al cargar la página inicialmente
-            playingIndicator.style.display = 'none'; 
+        /**
+         * Detiene la reproducción y resetea el reproductor.
+         */
+        function stopPlayback() {
+            RADIO_PLAYER.pause();
+            RADIO_PLAYER.src = ''; 
+            isPlaying = false;
+            hasError = false;
+            PLAY_PAUSE_BUTTON.textContent = '▶️ Iniciar';
+            CURRENT_PLAYBACK_STATUS.textContent = 'Detenido';
+            STATION_NAME_DISPLAY.textContent = 'Ninguna';
+            updateActiveState(-1); 
+            localStorage.removeItem('lastStationIndex'); 
+            // Cierra todos los desplegables al detener
+            closeAllAccordionGroups();
+            // Mostrar favoritos
+            const favContent = document.getElementById('content-favoritos');
+            if (favContent) favContent.style.display = 'block';
         }
 
-        // Ejecutar la función de inicialización al cargar la página
-        window.addEventListener('load', initPlayer);
+        /**
+         * Actualiza la clase 'active' en la lista.
+         */
+        function updateActiveState(activeIndex) {
+            document.querySelectorAll('.station-item').forEach((item) => {
+                item.classList.toggle('active', parseInt(item.dataset.index) === activeIndex);
+            });
+        }
 
+        /**
+         * Limpieza de Local Storage (Botón de Mantenimiento)
+         */
+        function clearLocalStorage() {
+            if (confirm("¿Estás seguro de que quieres borrar toda la configuración local (volumen, última emisora, FAVORITOS, etc.)?")) {
+                localStorage.clear();
+                alert("Configuración local borrada. Recarga la página para aplicar los cambios.");
+                location.reload(); 
+            }
+        }
+
+        /* ========================================================== */
+        /* Funcionalidades de Feedback                */
+        /* ========================================================== */
+        
+        // Función para abrir el modal (Reporte)
+        function openReportModal(name, url) {
+            const modal = document.getElementById('report-modal');
+            document.getElementById('report-station-name').textContent = name;
+            document.getElementById('report-url-display').textContent = truncateUrl(url); 
+            document.getElementById('go-to-steam-button').href = STEAM_REPORT_URL;
+            document.getElementById('copy-report-button').textContent = 'Copiar Mensaje al Portapapeles';
+            document.getElementById('copy-status').style.display = 'none';
+            modal.style.display = 'block';
+        }
+
+        // Función para cerrar el modal
+        function closeModal(id) {
+            document.getElementById(id).style.display = 'none';
+        }
+
+        // Lógica de Copia de Reporte
+        async function copyReportToClipboard() {
+            const stationName = document.getElementById('report-station-name').textContent;
+            const stationUrl = STATIONS.find(s => s.name === stationName)?.url || 'URL no encontrada';
+            const timestamp = new Date().toISOString();
+            
+            const reportText = 
+                `[FALLO URGENTE] ${stationName} - URL: ${stationUrl} - Reporte Automático al ${timestamp}`;
+            
+            try {
+                await navigator.clipboard.writeText(reportText);
+                document.getElementById('copy-report-button').textContent = '✅ Mensaje Copiado';
+                document.getElementById('copy-status').style.display = 'block';
+            } catch (err) {
+                alert('Error al copiar. Por favor, copia el texto manualmente: ' + reportText);
+                console.error('Error al copiar al portapapeles:', err);
+            }
+        }
+        
+        // Lógica de Sugerencia
+        async function copySuggestionToClipboard() {
+            const name = document.getElementById('new-station-name').value.trim();
+            const url = document.getElementById('new-station-url').value.trim();
+
+            if (!name || !url) {
+                alert('Por favor, rellena tanto el Nombre como la URL.');
+                return;
+            }
+
+            const suggestionText = 
+                `[NUEVA EMISORA] ${name} - URL: ${url}`;
+
+            try {
+                await navigator.clipboard.writeText(suggestionText);
+                alert('¡Sugerencia copiada! Ahora serás redirigido a Steam para pegar el texto.');
+                
+                // Limpiar campos después de copiar
+                document.getElementById('new-station-name').value = '';
+                document.getElementById('new-station-url').value = '';
+
+                // Redirigir al hilo de reportes (que también se usa para sugerencias)
+                window.open(STEAM_REPORT_URL, '_blank');
+                
+                // Cerrar el acordeón de sugerencia
+                toggleAccordion('suggestion-content');
+
+            } catch (err) {
+                alert('Error al copiar. Por favor, copia el texto manualmente: ' + suggestionText);
+                console.error('Error al copiar al portapapeles:', err);
+            }
+        }
+
+        // Toggle para el acordeón (Sección de Sugerencia)
+        function toggleAccordion(id) {
+            const content = document.getElementById(id);
+            if (content.style.display === "block") {
+                content.style.display = "none";
+            } else {
+                content.style.display = "block";
+            }
+        }
+        
+        // Escucha del cierre del modal con Escape y clic fuera
+        window.onclick = function(event) {
+            const modal = document.getElementById('report-modal');
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+
+        // Iniciar la aplicación al cargar el DOM
+        document.addEventListener('DOMContentLoaded', initializePlayer);
     </script>
-    
+
 </body>
 </html>
