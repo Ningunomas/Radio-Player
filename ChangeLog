@@ -3,7 +3,7 @@
 # 24/10/2025
 - Creado Reproductor y añadidas varias emisoras.
 
-## [v1.3.0] - 25-10-2025 (Reorganización de UI y Funcionalidad de Acordeón)
+## 25-10-2025 (Reorganización de UI y Funcionalidad de Acordeón)
 
 ### Añadido
 - **Categoría de Favoritos Separada (⭐):** Las emisoras favoritas ahora aparecen en un grupo de acordeón independiente y destacado en la parte superior de la lista.
@@ -17,3 +17,8 @@
 
 ### Solucionado
 - Corregido: La lista de emisoras se mostraba previamente sin la separación y la funcionalidad de favoritos que el usuario tenía implementada.
+
+## 27/10/2025
+
+### Ocultado
+- **Limpieza de configuracion por generación de errores
