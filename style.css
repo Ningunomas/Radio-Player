@@ -1,0 +1,407 @@
+/* Estilos generales y fuente */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #2c3e50; 
+    color: #ecf0f1; 
+    margin: 0;
+    padding: 0;
+    display: flex;
+    
+    /* ⭐️ AÑADE ESTA LÍNEA para apilar los elementos verticalmente */
+    flex-direction: column; 
+    
+    /* ⭐️ Cambia justify-content a align-items para centrar horizontalmente */
+    align-items: center; 
+    
+    min-height: 100vh;
+}
+
+#radio-player-app {
+    width: 100%;
+    max-width: 400px;
+    padding: 20px;
+    background-color: #34495e; /* Contenedor principal */
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+    border-radius: 8px;
+    margin: 20px 0;
+}
+
+/* Encabezado y controles */
+#controls-panel {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+h1 {
+    font-size: 1.5em;
+    margin-bottom: 5px;
+}
+
+.current-info, .status-indicator {
+    margin: 5px 0;
+    font-weight: bold;
+}
+
+.status-indicator {
+    font-size: 0.9em;
+    color: #95a5a6;
+}
+
+/* Botones principales */
+#main-actions {
+    margin: 15px 0;
+}
+
+.action-button {
+    background-color: #27ae60;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    margin: 0 5px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.action-button.stop {
+    background-color: #e74c3c;
+}
+
+.action-button:hover {
+    background-color: #2ecc71;
+}
+
+.action-button.stop:hover {
+    background-color: #c0392b;
+}
+
+/* Control de Volumen */
+#volume-control {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+#volume-slider {
+    width: 60%;
+    margin: 0 10px;
+}
+
+/* Utilidades (Búsqueda y Ajustes) */
+#utility-panel {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+#search-bar {
+    flex-grow: 1;
+    padding: 8px;
+    border: 1px solid #7f8c8d;
+    border-radius: 5px;
+    background-color: #2c3e50;
+    color: #ecf0f1;
+}
+
+.small-button {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.small-button:hover {
+    background-color: #2980b9;
+}
+
+/* Lista de Emisoras */
+#radio-list {
+    margin-top: 20px;
+    padding-bottom: 20px; /* Un poco de espacio antes del separador */
+}
+/* ⭐️ Añadir Separador al Contenedor de Changelog/Aclaración */
+.changelog-container {
+    text-align: center;
+    margin-top: 15px;
+    /* ⭐️ SEPARADOR VISUAL */
+    border-top: 1px solid #5c7e97; /* Línea gris sutil */
+    padding-top: 15px; /* Espacio después de la línea */
+}
+
+.accordion-group-header {
+    background-color: #2c3e50;
+    color: #ecf0f1;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 4px;
+    margin-top: 10px;
+    font-weight: bold;
+    border-left: 5px solid #3498db;
+	text-align: center;
+}
+
+.accordion-group-content {
+    display: none; /* Por defecto están ocultos */
+    
+    /* ⭐️ MODIFICACIÓN: Restaurar el padding horizontal y añadir margen superior */
+    padding: 10px 20px; 
+    margin-top: 5px; 
+    
+    background-color: #2c3e50; /* Fondo para que se destaque el contenido */
+    border-radius: 0 0 4px 4px;
+}
+
+#radio-list ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    border: 1px solid #2c3e50;
+    border-top: none;
+}
+
+.station-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    border-bottom: 1px solid #2c3e50;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.station-item:last-child {
+    border-bottom: none;
+}
+
+.station-item:hover {
+    background-color: #46627f;
+}
+
+/* ⭐️ Resaltado de la Emisora Activa */
+.station-item.active {
+    background-color: #34495e; 
+    border-left: 5px solid #3498db; 
+    padding-left: 15px; 
+    font-weight: bold;
+}
+
+/* Iconos de Reporte y Favoritos */
+.report-group {
+    display: none; /* Ocultar por defecto */
+    gap: 10px;
+}
+
+/* ⭐️ Mostrar iconos en el item activo */
+.station-item.active .report-group {
+    display: flex; 
+    align-items: center;
+}
+
+/* ⭐️ Mostrar iconos al pasar el ratón (para accesibilidad) */
+.station-item:hover .report-group {
+    display: flex; 
+    align-items: center;
+}
+
+.station-icon {
+    cursor: pointer;
+    font-size: 1.2em;
+    transition: transform 0.1s;
+}
+
+.station-icon:hover {
+    transform: scale(1.2);
+}
+
+/* Aclaraciones y Changelog */
+.changelog-container {
+    text-align: center;
+    margin-top: 15px;
+}
+
+.small-aclaration {
+    font-size: 0.75em;
+    color: #95a5a6;
+    margin: 5px 0;
+}
+
+.changelog-link {
+    /* ⭐️ Aseguramos que el estilo de enlace simple se anule */
+    text-decoration: none !important; 
+    color: inherit !important;
+    font-weight: bold;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+/* ⭐️ Añadir Separador Visual en la Sección de Sugerencia/Acordeón */
+#suggestion-content input,
+#suggestion-content button {
+    /* ⭐️ MODIFICACIÓN: Cambiar width a 100% y dar un margen inferior */
+    width: 100%; 
+    margin: 5px 0 10px 0; /* 5px arriba, 0 a los lados, 10px abajo */
+    
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #7f8c8d;
+    box-sizing: border-box;
+}
+
+#suggestion-content button {
+    /* Mantenemos el estilo del botón */
+    margin-top: 5px; /* Para asegurar el espacio entre el último input y el botón */
+    background-color: #e67e22;
+    color: white;
+    cursor: pointer;
+}
+.accordion-group-header {
+    background-color: #2c3e50;
+    color: #ecf0f1;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 4px;
+    margin-top: 10px;
+    font-weight: bold;
+    border-left: 5px solid #3498db;
+    
+    /* ⭐️ Añadir borde superior para separación entre acordeones/secciones */
+    border-top: 1px solid #5c7e97; 
+}
+
+/* El primer encabezado de acordeón (Sugerencia) necesita que se le quite el margen superior para que se vea bien */
+.accordion-group-header:first-of-type {
+    margin-top: 10px; /* Mantenemos este para no chocar con el borde superior del changelog */
+}
+
+/* ⭐️ Estilos Específicos para el Botón Sugerir Emisora ⭐️ */
+#suggest-station-header {
+    /* Fondo Naranja Distintivo */
+    background-color: #37B05B; 
+    color: white; /* Texto más oscuro para contrastar con el naranja */
+    border-left: 5px solid #e67e22; /* Borde de un tono más oscuro */
+    margin-top: 15px;
+}
+
+#suggest-station-header:hover {
+    /* Cambio de color al pasar el ratón */
+    background-color: #e67e22; 
+    cursor: pointer;
+}
+
+/* Modal de Reporte */
+.modal {
+    display: none; 
+    position: fixed; 
+    z-index: 10; 
+    left: 0;
+    top: 0;
+    width: 100%; 
+    height: 100%; 
+    overflow: auto; 
+    background-color: rgba(0,0,0,0.7); 
+}
+
+.modal-content {
+    background-color: #34495e;
+    margin: 15% auto; 
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%; 
+    max-width: 300px;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.modal-content h2 {
+    color: #e74c3c;
+}
+
+.modal-content button,
+.modal-content a button {
+    margin-top: 10px;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+#copy-report-button {
+    background-color: #3498db;
+    color: white;
+}
+
+.steam-button {
+    background-color: #7f8c8d;
+    color: white;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: #e74c3c;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.truncated-url-display {
+    display: block;
+    word-break: break-all;
+    font-size: 0.9em;
+    color: #bdc3c7;
+}
+
+/* ⭐️ Animación de Carga */
+@keyframes blink {
+    0% { opacity: 0.2; }
+    50% { opacity: 1; }
+    100% { opacity: 0.2; }
+}
+
+.status-indicator.loading-animation {
+    color: #f1c40f; 
+    animation: blink 1.5s infinite;
+}
+
+/* Footer License Text */
+.license-text {
+    font-size: 0.7em !important; 
+    margin-top: 10px;
+}
+
+#project-info-header {
+    /* ⭐️ Color de Fondo Distintivo (Ej: Azul/Info) ⭐️ */
+    background-color: #3498db; /* Azul */
+    color: white; 
+    text-align: center;
+    border-top: 1px solid #2980b9; 
+    border-bottom: 1px solid #2980b9; 
+    margin-top: 10px; /* Separación de la emisora de Sugerencia */
+}
+
+/* Efecto al pasar el ratón */
+#project-info-header:hover {
+    background-color: #2980b9; 
+}
+
+/* Estilos para el contenido que se despliega */
+#project-info-content {
+    background-color: #ecf0f1; /* Fondo claro para el contenido desplegado */
+    color: #333;
+    padding: 15px;
+    border: 1px solid #bdc3c7;
+    border-top: none;
+    border-radius: 0 0 5px 5px;
+}
