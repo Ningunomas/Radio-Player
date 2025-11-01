@@ -47,6 +47,11 @@ const ALL_STATIONS_DATA = {
 		{ name: "Skyrock", url: "https://icecast.skyrock.net/s/natio_aac_96k" },
 		{ name: "RTL 2", url: "https://streamer-04.rtl.fr/rtl2-1-44-128" },
 		{ name: "RTL 104.3 FM", url: "https://streamer-02.rtl.fr/rtl-1-44-128?aw_0_1st.broadcast_type=streaming&aw_0_1st.source_type=external&aw_0_1st.platform=external&aw_0_1st.media_category=fm&aw_0_1st.station=rtl&aw_0_1st.program=rtl&listen=wEbAwQMBgULAAQFAg8PBAEDBQ" },
+		{ name: "France Info", url: "https://icecast.radiofrance.fr/franceinfo-midfi.mp3" },
+		{ name: "NRJ REGGAETON", url: "https://streaming.nrjaudio.fm/ou8vs6gk7oiu?origine=radio.net&aw_0_1st.station=NRJ-Reggaeton" },
+		{ name: "CHERIE FM", url: "https://streaming.nrjaudio.fm/ouuku85n3nje?origine=radio.net" },
+		{ name: "Eurodance 90", url: "https://stream-eurodance90.fr/radio/8000/128.mp3" },
+		{ name: "Générations - JUL", url: "https://generations-jul.ice.infomaniak.ch/generations-jul.mp3" },
 		{ name: "Europe 2", url: "https://europe2.lmn.fm/europe2.mp3?aw_0_1st.playerid=lgrdnwsRadiofr" }		
     ],
     "Otros": [
@@ -296,4 +301,5 @@ const translations = {
 		"feedback_button_text": "Évaluation / Commentaires",
 		"copy_alert_error": "Erreur lors de la copie. Veuillez copier le texte manuellement : "
     }
+
 };
